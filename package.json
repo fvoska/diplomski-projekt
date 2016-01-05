@@ -19,5 +19,8 @@
   "homepage": "https://github.com/fvoska/diplomski-projekt#readme",
   "dependencies": {
     "express": "^4.13.3"
+  },
+  "engines": {
+    "node": "^5.1.0"
   }
 }
