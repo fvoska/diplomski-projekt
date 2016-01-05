@@ -1,0 +1,1 @@
+Tu æemo staviti Python hascheck skriptu koja prima upite za ispravljanje i koja sprema u bazu.

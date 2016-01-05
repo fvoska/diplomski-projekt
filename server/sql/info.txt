@@ -1,0 +1,1 @@
+Tu æemo stavljati SQL skripte koje stvaraju MySQL bazu i tablice.
