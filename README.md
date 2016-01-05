@@ -5,9 +5,9 @@
 * Filip Voska
 
 ### Running the client
-Client files can be served via any HTTP server.
+Client files can be served via any HTTP server. If using Apache, make sure to enable mod-rewrite and use /client/.htaccess.
 
-Included in this project is a small script which starts up Node.js HTTP server using Express. Client is served as static content. Default port is 80, change it in /index.js if needed.
+Alternatively, included in this project is a small script which starts up Node.js HTTP server using Express. Client is served as static content. Default port is 80, change it in /index.js if needed.
 
 Installation instructions for Debian and Ubuntu based Linux distributions:
 ```
