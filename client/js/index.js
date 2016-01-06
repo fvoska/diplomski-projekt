@@ -1,4 +1,25 @@
-var app = angular.module('diplomski-projekt', ['ngRoute']);
+var app = angular.module('diplomski-projekt', ['ngRoute', 'chieffancypants.loadingBar', 'ngAnimate'])
+.config(function(cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeSpinner = false;
+});
+/*
+app.animation('.fader', function() {
+  return {
+    enter: function(element, done) {
+      element.css('display', 'none');
+      element.fadeIn(250, done);
+      return function() {
+        element.stop();
+      }
+    },
+    leave: function(element, done) {
+      element.fadeOut(250, done)
+      return function() {
+        element.stop();
+      }
+    }
+  }
+});*/
 
 app.config(function($routeProvider, $locationProvider) {
   // Set up routes.
@@ -31,21 +52,17 @@ app.config(function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 });
 
-app.controller('mainCtrl', function($scope) {
-
-});
-
 app.run(['$rootScope', '$route', function($rootScope, $route) {
   $rootScope.trans = trans;
   $rootScope.$on('$routeChangeSuccess', function() {
-      $rootScope.title = $route.current.title;
-      if ($route.current.redirectTo == '/') {
-        $('.sidebar-nav').find('.active').removeClass('active');
-        $('#home').addClass('active');
-      }
-      else {
-        $('.sidebar-nav').find('.active').removeClass('active');
-        $('#' + $route.current.navId).addClass('active');
-      }
+    $rootScope.title = $route.current.title;
+    if ($route.current.redirectTo == '/') {
+      $('.sidebar-nav').find('.active').removeClass('active');
+      $('#home').addClass('active');
+    }
+    else {
+      $('.sidebar-nav').find('.active').removeClass('active');
+      $('#' + $route.current.navId).addClass('active');
+    }
   });
 }]);

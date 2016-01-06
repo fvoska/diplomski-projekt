@@ -1,4 +1,4 @@
-angular.module('diplomski-projekt').controller('page3Ctrl', function($scope, $http, $timeout, cfpLoadingBar) {
+angular.module('diplomski-projekt').controller('homeCtrl', function($scope, $http, $timeout, cfpLoadingBar) {
   $scope.start = function() {
     cfpLoadingBar.start();
   };

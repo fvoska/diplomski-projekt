@@ -1,0 +1,36 @@
+/*
+#contentContainer {
+    position: absolute;
+    top: 102px;
+    left: 15px;
+    right: 15px;
+}
+
+@media(min-width:768px) {
+    #contentContainer {
+        position: absolute;
+        top: 51px;
+        left: 265px;
+        right: 15px;
+    }
+}
+*/
+
+.fader.ng-enter {
+  transition:0.25s linear all;
+  opacity:0;
+}
+
+.fader.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+/*
+.fader.ng-leave {
+  transition:0.25s linear all;
+  opacity:1;
+}
+.fader.ng-leave.ng-leave-active {
+  opacity:0;
+}
+*/

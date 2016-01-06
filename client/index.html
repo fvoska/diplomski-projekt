@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="diplomski-projekt">
+<html lang="en" ng-app="diplomski-projekt" ngCloak>
 
-<head ngCloak>
+<head>
 
     <base href="/">
 
@@ -27,6 +27,12 @@
     <!-- Custom Fonts -->
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Loading Bar -->
+    <link href="css/loading-bar.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -34,12 +40,14 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- jQuery -->
+    <script src="js/libs/jquery.min.js"></script>
+
     <!-- Angular -->
 	<script src="js/libs/angular.min.js"></script>
     <script src="js/libs/angular-route.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="js/libs/jquery.min.js"></script>
+    <script src="js/libs/angular-animate.min.js"></script>
+    <script src="js/libs/loading-bar.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/libs/bootstrap.min.js"></script>
@@ -60,15 +68,16 @@
     <script src="js/index.js"></script>
 
     <!-- Controllers -->
+    <script src="js/controllers/homeCtrl.js"></script>
     <script src="js/controllers/page1Ctrl.js"></script>
     <script src="js/controllers/page2Ctrl.js"></script>
     <script src="js/controllers/page3Ctrl.js"></script>
 
 </head>
 
-<body ngCloak>
+<body>
 
-    <div id="wrapper" ng-controller="mainCtrl">
+    <div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -322,18 +331,7 @@
         </nav>
 
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">{{ trans(title) }}</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-
-            <!-- Content -->
-			<div ng-view></div>
-            <!-- /Content -->
-
+            <div ng-view id="contentContainer" class="fader"></div>
         </div>
         <!-- /#page-wrapper -->
 
