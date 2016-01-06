@@ -2,7 +2,6 @@ var app = angular.module('diplomski-projekt', ['ngRoute', 'chieffancypants.loadi
 .config(function(cfpLoadingBarProvider) {
   cfpLoadingBarProvider.includeSpinner = false;
 });
-/*
 app.animation('.fader', function() {
   return {
     enter: function(element, done) {
@@ -19,7 +18,7 @@ app.animation('.fader', function() {
       }
     }
   }
-});*/
+});
 
 app.config(function($routeProvider, $locationProvider) {
   // Set up routes.

@@ -1,4 +1,3 @@
-/*
 #contentContainer {
     position: absolute;
     top: 102px;
@@ -10,12 +9,12 @@
     #contentContainer {
         position: absolute;
         top: 51px;
-        left: 265px;
-        right: 15px;
+        left: 280px;
+        right: 30px;
     }
 }
-*/
 
+/*
 .fader.ng-enter {
   transition:0.25s linear all;
   opacity:0;
@@ -25,7 +24,7 @@
   opacity:1;
 }
 
-/*
+
 .fader.ng-leave {
   transition:0.25s linear all;
   opacity:1;
