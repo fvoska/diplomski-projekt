@@ -21,13 +21,13 @@ U skripti za ispravljanje pokupiti sve što trebamo pratiti:
 ## 1.2. Obrada zahtjeva
 
 Kada primimo zahtjev za obradu teksta:
-1. Ako je ovo prvi puta da se javio userID:
+* Ako je ovo prvi puta da se javio userID:
     * Stvori novog usera
-2. Ako je ovo prvi puta da se javio sessionID:
+* Ako je ovo prvi puta da se javio sessionID:
     * Stvori novi session (s novim ili već postojećim userID)
-3. Ako već postoji session s primljenim ID-om, ali je IP različit:
+* Ako već postoji session s primljenim ID-om, ali je IP različit:
     * Dodaj novi zapis u SESSION_IP s sessionID i novim IP-om i zapiši novi IP u lastIP (za brzi dohvat zadnjeg IP-a da ne trebamo stalno JOIN-ati SESSION i SESSION_IP ako nas samo zanima zadnji IP).
-4. Stvori novi zapis u REQUEST:
+* Stvori novi zapis u REQUEST:
     * Zapisati sessionID
     * Spremiti tekst koji je poslan na ispravljanje u requestText
         * Dodati mogućnost korisniku da se NE sprema (radi privatnosti), npr. preko parametra skripti za ispravljanje slično kao i kontekst.
