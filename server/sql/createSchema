@@ -1,0 +1,72 @@
+CREATE SCHEMA `ispravime` ;
+
+CREATE TABLE `ispravime`.`user` (
+  `userID` VARCHAR(75) NOT NULL,
+  `timeAppeard` DATETIME NOT NULL,
+  PRIMARY KEY (`userID`));
+
+CREATE TABLE `ispravime`.`session` (
+  `sessionID` VARCHAR(75) NOT NULL,
+  `userID` VARCHAR(75) NOT NULL,
+  `lastIP` VARCHAR(15) NULL,
+  PRIMARY KEY (`sessionID`),
+  CONSTRAINT `userID`
+    FOREIGN KEY (`userID`)
+    REFERENCES `ispravime`.`user` (`userID`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+CREATE TABLE `ispravime`.`session_ip` (
+  `sessionID` VARCHAR(75) NOT NULL,
+  `IP` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`IP`, `sessionID`),
+  CONSTRAINT `sID`
+    FOREIGN KEY (`sessionID`)
+    REFERENCES `ispravime`.`session` (`sessionID`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+	CREATE TABLE `ispravime`.`request` (
+  `reqID` INT NOT NULL AUTO_INCREMENT,
+  `requestText` VARCHAR(999) NULL,
+  `reqTextLength` INT NULL,
+  `sessionID` VARCHAR(75) NOT NULL,
+  `timeRequested` DATETIME NULL,
+  `timeProcessed` DATETIME NULL,
+  PRIMARY KEY (`reqID`),
+    FOREIGN KEY (`sessionID`)
+    REFERENCES `ispravime`.`session` (`sessionID`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+	CREATE TABLE `ispravime`.`error_type` (
+  `errorTypeID` VARCHAR(10) NOT NULL,
+  `errorTypeDesc` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`errorTypeID`));
+  
+  CREATE TABLE `ispravime`.`error` (
+  `errorID` INT NOT NULL AUTO_INCREMENT,
+  `errorTypeID` VARCHAR(10) NULL,
+  `errorPhrase` VARCHAR(30) NULL,
+  `numOccur` INT NULL,
+  `correctedTo` VARCHAR(30) NULL,
+  PRIMARY KEY (`errorID`),
+    FOREIGN KEY (`errorTypeID`)
+    REFERENCES `ispravime`.`error_type` (`errorTypeID`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION);
+
+	CREATE TABLE `ispravime`.`request_error` (
+  `errorID` INT NOT NULL,
+  `reqID` INT NULL,
+  PRIMARY KEY (`errorID`),
+  CONSTRAINT `reqKey`
+    FOREIGN KEY (`reqID`)
+    REFERENCES `ispravime`.`request` (`reqID`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `errorKey`
+    FOREIGN KEY (`errorID`)
+    REFERENCES `ispravime`.`error` (`errorID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
