@@ -79,12 +79,13 @@ sessionID - strani ključ refenrencira SESSION.sessionID
 
 ## 2.4. Zahtjev
 ```
-REQUEST = (reqID, sessionID, requestText, timeRequested, timeProcessed)
+REQUEST = (reqID, sessionID, requestText, textLength, timeRequested, timeProcessed)
 K = (reqID)
 
 Tipovi podataka:
 reqID - INT AUTONUMBER
-requestText - TEXT
+requestText - TEXT - možda radi privatnosti ne zapisujemo
+reqTextLength - INT - svakako zapisujemo dužinu teksta (ili broj riječi u tekstu ili dužinu stringa)
 sessionID - strani ključ refenrencira SESSION.sessionID
 timeRequested - DATETIME
 timeProcessed - DATETIME
