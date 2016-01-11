@@ -1,32 +1,32 @@
-CREATE SCHEMA `ispravime` ;
+CREATE SCHEMA `ispraviMe`;
 
-CREATE TABLE `ispravime`.`user` (
+CREATE TABLE `ispraviMe`.`user` (
   `userID` VARCHAR(75) NOT NULL,
   `timeAppeard` DATETIME NOT NULL,
   PRIMARY KEY (`userID`));
 
-CREATE TABLE `ispravime`.`session` (
+CREATE TABLE `ispraviMe`.`session` (
   `sessionID` VARCHAR(75) NOT NULL,
   `userID` VARCHAR(75) NOT NULL,
   `lastIP` VARCHAR(15) NULL,
   PRIMARY KEY (`sessionID`),
   CONSTRAINT `userID`
     FOREIGN KEY (`userID`)
-    REFERENCES `ispravime`.`user` (`userID`)
+    REFERENCES `ispraviMe`.`user` (`userID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
-CREATE TABLE `ispravime`.`session_ip` (
+CREATE TABLE `ispraviMe`.`session_ip` (
   `sessionID` VARCHAR(75) NOT NULL,
   `IP` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`IP`, `sessionID`),
   CONSTRAINT `sID`
     FOREIGN KEY (`sessionID`)
-    REFERENCES `ispravime`.`session` (`sessionID`)
+    REFERENCES `ispraviMe`.`session` (`sessionID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
-	CREATE TABLE `ispravime`.`request` (
+CREATE TABLE `ispraviMe`.`request` (
   `reqID` INT NOT NULL AUTO_INCREMENT,
   `requestText` VARCHAR(999) NULL,
   `reqTextLength` INT NULL,
@@ -35,16 +35,16 @@ CREATE TABLE `ispravime`.`session_ip` (
   `timeProcessed` DATETIME NULL,
   PRIMARY KEY (`reqID`),
     FOREIGN KEY (`sessionID`)
-    REFERENCES `ispravime`.`session` (`sessionID`)
+    REFERENCES `ispraviMe`.`session` (`sessionID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
-	CREATE TABLE `ispravime`.`error_type` (
+CREATE TABLE `ispraviMe`.`error_type` (
   `errorTypeID` VARCHAR(10) NOT NULL,
   `errorTypeDesc` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`errorTypeID`));
-  
-  CREATE TABLE `ispravime`.`error` (
+
+CREATE TABLE `ispraviMe`.`error` (
   `errorID` INT NOT NULL AUTO_INCREMENT,
   `errorTypeID` VARCHAR(10) NULL,
   `errorPhrase` VARCHAR(30) NULL,
@@ -52,21 +52,21 @@ CREATE TABLE `ispravime`.`session_ip` (
   `correctedTo` VARCHAR(30) NULL,
   PRIMARY KEY (`errorID`),
     FOREIGN KEY (`errorTypeID`)
-    REFERENCES `ispravime`.`error_type` (`errorTypeID`)
+    REFERENCES `ispraviMe`.`error_type` (`errorTypeID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
-	CREATE TABLE `ispravime`.`request_error` (
+CREATE TABLE `ispraviMe`.`request_error` (
   `errorID` INT NOT NULL,
   `reqID` INT NULL,
   PRIMARY KEY (`errorID`),
   CONSTRAINT `reqKey`
     FOREIGN KEY (`reqID`)
-    REFERENCES `ispravime`.`request` (`reqID`)
+    REFERENCES `ispraviMe`.`request` (`reqID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `errorKey`
     FOREIGN KEY (`errorID`)
-    REFERENCES `ispravime`.`error` (`errorID`)
+    REFERENCES `ispraviMe`.`error` (`errorID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);

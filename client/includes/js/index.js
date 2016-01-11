@@ -25,26 +25,26 @@ app.config(function($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
       navId: 'home',
-      templateUrl: '/views/home.html',
+      templateUrl: config.baseUrl + '/views/home.html',
       title: 'home'
     })
     .when('/page1', {
       navId: 'page1',
-      templateUrl: '/views/page1.html',
+      templateUrl: config.baseUrl + '/views/page1.html',
       title: 'page1'
     })
     .when('/page2', {
       navId: 'page2',
-      templateUrl: '/views/page2.html',
+      templateUrl: config.baseUrl + '/views/page2.html',
       title: 'page2'
     })
     .when('/page3', {
       navId: 'page3',
-      templateUrl: '/views/page3.html',
+      templateUrl: config.baseUrl + '/views/page3.html',
       title: 'page3'
     })
     .otherwise({
-      redirectTo: '/'
+      redirectTo: config.baseUrl + '/'
     });
 
   // Use the HTML5 History API.

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="diplomski-projekt" ngCloak>
-
+<?php $base_url = "/grupa84/app/"; ?>
 <head>
-
-    <base href="/">
+    <base href="<?php echo $base_url; ?>">
 
     <meta name="google-site-verification" content="NRwDBbCATquAIURcWzzxIZFPnaPnjS811EU_pdWnsEg" />
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,62 +14,62 @@
     <title>{{ trans(title) }} - {{trans('application_title')}}</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $base_url; ?>includes/css/bootstrap.min.css" rel="stylesheet">
 
 	<!-- MetisMenu CSS -->
-    <link href="css/metisMenu.min.css" rel="stylesheet">
+    <link href="<?php echo $base_url; ?>includes/css/metisMenu.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="<?php echo $base_url; ?>includes/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="<?php echo $base_url; ?>includes/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- Loading Bar -->
-    <link href="css/loading-bar.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo $base_url; ?>includes/css/loading-bar.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Custom CSS -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="<?php echo $base_url; ?>includes/css/style.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.includes/js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
     <!-- jQuery -->
-    <script src="js/libs/jquery.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/jquery.min.js"></script>
 
     <!-- Angular -->
-	<script src="js/libs/angular.min.js"></script>
-    <script src="js/libs/angular-route.min.js"></script>
-    <script src="js/libs/angular-animate.min.js"></script>
-    <script src="js/libs/loading-bar.min.js"></script>
+	<script src="<?php echo $base_url; ?>includes/js/libs/angular.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/angular-route.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/angular-animate.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/loading-bar.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/bootstrap.min.js"></script>
 
 	<!-- Metis Menu Plugin JavaScript -->
-    <script src="js/libs/metisMenu.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/metisMenu.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="js/libs/sb-admin-2.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/sb-admin-2.js"></script>
 
     <!-- Config -->
-    <script src="js/config.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/config.js"></script>
 
     <!-- Translations -->
-    <script src="js/translations.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/translations.js"></script>
 
     <!-- Main script -->
-    <script src="js/index.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/index.js"></script>
 
     <!-- Controllers -->
-    <script src="js/controllers/homeCtrl.js"></script>
-    <script src="js/controllers/page1Ctrl.js"></script>
-    <script src="js/controllers/page2Ctrl.js"></script>
-    <script src="js/controllers/page3Ctrl.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/controllers/homeCtrl.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/controllers/page1Ctrl.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/controllers/page2Ctrl.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/controllers/page3Ctrl.js"></script>
 
 </head>
 
@@ -88,7 +86,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">{{trans('application_title')}}</a>
+                <a class="navbar-brand" href="<?php echo $base_url; ?>index.html">{{trans('application_title')}}</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -293,7 +291,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="<?php echo $base_url; ?>login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -306,19 +304,19 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="/" id="home" class="active"><i class="fa fa-home fa-fw"></i> {{ trans('home') }}</a>
+                            <a href="<?php echo $base_url; ?>" id="home" class="active"><i class="fa fa-home fa-fw"></i> {{ trans('home') }}</a>
                         </li>
                         <li>
-                            <a href="/page1" id="page1"><i class="fa fa-eye fa-fw"></i> {{ trans('page1') }}</a>
+                            <a href="<?php echo $base_url; ?>page1" id="page1"><i class="fa fa-eye fa-fw"></i> {{ trans('page1') }}</a>
                         </li>
 						<li>
                             <a href="#"><i class="fa fa-folder fa-fw"></i> {{ trans('pages23') }}<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
 								<li>
-									<a href="/page2" id="page2"><i class="fa fa-table fa-fw"></i> {{ trans('page2') }}</a>
+									<a href="<?php echo $base_url; ?>page2" id="page2"><i class="fa fa-table fa-fw"></i> {{ trans('page2') }}</a>
 								</li>
 								<li>
-									<a href="/page3" id="page3"><i class="fa fa-table fa-fw"></i> {{ trans('page3') }}</a>
+									<a href="<?php echo $base_url; ?>page3" id="page3"><i class="fa fa-table fa-fw"></i> {{ trans('page3') }}</a>
 								</li>
                             </ul>
                             <!-- /.nav-second-level -->

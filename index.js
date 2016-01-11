@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 
-app.use(express.static('client'));
+app.use('/', express.static('client'));
 app.use(function(req, res) {
   // Use res.sendfile, as it streams instead of reading the file into memory.
   res.sendFile(__dirname + '/client/index.html');
