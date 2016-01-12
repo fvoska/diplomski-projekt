@@ -17,15 +17,24 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-requests">
                             <thead>
                                 <tr>
-                                    <th>{{ trans("request_id") }}</th>
-                                    <th>{{ trans("req_time") }}</th>
-                                    <th>{{ trans("req_processing") }}</th>
-                                    <th>{{ trans("num_errors") }}</th>
-                                    <th>{{ trans("actions") }}</th>
+                                    <th>{{ trans('request_id') }}</th>
+                                    <th>{{ trans('req_time') }}</th>
+                                    <th>{{ trans('req_processing') }}</th>
+                                    <th>{{ trans('num_errors') }}</th>
+                                    <th>{{ trans('actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>request_id</th>
+                                    <th>req_time</th>
+                                    <th>req_processing</th>
+                                    <th>num_errors</th>
+                                    <th class="bottomRight">actions</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <!-- /.table-responsive -->
@@ -40,7 +49,14 @@
 
     <script>
     $(document).ready(function() {
-        $('#dataTables-requests').DataTable({
+        $('#dataTables-requests tfoot th').each( function () {
+            var title = $(this).text();
+            if (title != 'actions') {
+                $(this).html('<input type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" />');
+            }
+        });
+
+        var table = $('#dataTables-requests').DataTable({
             responsive: true,
             'language': {
                 'lengthMenu': trans('lengthMenu'),
@@ -69,6 +85,17 @@
                     }
                 }
             ]
+        });
+
+        table.columns().every(function() {
+            var that = this;
+            $('input', this.footer()).on('keydown', function (ev) {
+                if (ev.keyCode == 13) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
         });
     });
     </script>

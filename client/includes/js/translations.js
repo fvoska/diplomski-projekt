@@ -6,6 +6,7 @@ var translations = {
     'back': 'Vrati se',
     'actions': 'Akcije',
     'details': 'Detalji',
+    'filter_by': 'Filtriraj po',
 
     /* Homepage */
     'home': 'Naslovna',

@@ -66,14 +66,22 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-errors">
                             <thead>
                                 <tr>
-                                    <th>{{ trans("error_id") }}</th>
-                                    <th>{{ trans("suspicious_word") }}</th>
-                                    <th>{{ trans("error_type") }}</th>
-                                    <th>{{ trans("num_occur") }}</th>
+                                    <th>{{ trans('error_id') }}</th>
+                                    <th>{{ trans('suspicious_word') }}</th>
+                                    <th>{{ trans('error_type') }}</th>
+                                    <th>{{ trans('num_occur') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>error_id</th>
+                                    <th>suspicious_word</th>
+                                    <th>error_type</th>
+                                    <th>num_occur</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <!-- /.table-responsive -->
@@ -88,7 +96,14 @@
 
     <script>
     $(document).ready(function() {
-        $('#dataTables-errors').DataTable({
+        $('#dataTables-errors tfoot th').each( function () {
+            var title = $(this).text();
+            if (title != 'actions') {
+                $(this).html('<input type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" />');
+            }
+        });
+
+        var table = $('#dataTables-errors').DataTable({
             responsive: true,
             'language': {
                 'lengthMenu': trans('lengthMenu'),
@@ -107,6 +122,17 @@
                 { 'data': 'type' },
                 { 'data': 'numOccur' }
             ]
+        });
+
+        table.columns().every(function() {
+            var that = this;
+            $('input', this.footer()).on('keydown', function (ev) {
+                if (ev.keyCode == 13) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
         });
     });
     </script>
