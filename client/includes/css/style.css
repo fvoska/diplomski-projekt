@@ -48,16 +48,19 @@ input.footer-search {
     border-top-width: 3px;
     border-left: none;
     border-bottom: none;
+    border-right: none;
 }
 #dataTables-errors tfoot th {
     border-top-width: 3px;
     border-left: none;
     border-bottom: none;
+    border-right: none;
 }
 #dataTables-requests tfoot th {
     border-top-width: 3px;
     border-left: none;
     border-bottom: none;
+    border-right: none;
 }
 #dataTables-users_filter {
     display: none;
