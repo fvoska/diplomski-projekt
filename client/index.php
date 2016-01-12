@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="diplomski-projekt" ngCloak>
-<?php echo $_GET['action']; ?>
-<?php $base_url = "/grupa84/app/"; ?>
+<html lang="en" ng-app="diplomski-projekt">
+<?php //$base_url = "/grupa84/app/"; ?>
 <?php $base_url = "/diplomski/client/"; ?>
 <head>
     <base href="<?php echo $base_url; ?>">
@@ -13,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ trans(title) }} {{ title_detail }} - {{trans('application_title')}}</title>
+    <title ngCloak>{{ trans(title) }} {{ title_detail }} - {{trans('application_title')}}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo $base_url; ?>includes/css/bootstrap.min.css" rel="stylesheet">
@@ -92,7 +91,7 @@
 
 <body>
 
-    <div id="wrapper">
+    <div id="wrapper" class="ng-cloak" ngCloak>
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">

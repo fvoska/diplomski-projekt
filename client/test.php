@@ -25,6 +25,6 @@ $user['first_appear'] = '2016-01-01';
 $user['num_requests'] = 14;
 $user['last_ip'] = '161.53.18.66';
 array_push($data['data'], $user);
-
+sleep(1);
 echo json_encode($data);
 ?>
