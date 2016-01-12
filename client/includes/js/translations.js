@@ -7,6 +7,10 @@ var translations = {
     'actions': 'Akcije',
     'details': 'Detalji',
     'filter_by': 'Filtriraj po',
+    'first': 'Prva',
+    'last': 'Zadnja',
+    'next': 'Sljedeća',
+    'previous': 'Prethodna',
 
     /* Homepage */
     'home': 'Naslovna',
