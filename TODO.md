@@ -6,7 +6,6 @@ U skripti za ispravljanje pokupiti sve što trebamo pratiti:
 * Informacije o korisniku:
     * IP (eksterni)
     * User ID iz cookieja - HascheckUserID
-    * Session ID iz cookieja - HasekSID
 * Informacije o zahtjevu:
     * Datum i vrijeme zahtjeva
     * Tekst poslan na ispravljanje
@@ -23,12 +22,10 @@ U skripti za ispravljanje pokupiti sve što trebamo pratiti:
 Kada primimo zahtjev za obradu teksta:
 * Ako je ovo prvi puta da se javio userID:
     * Stvori novog usera
-* Ako je ovo prvi puta da se javio sessionID:
-    * Stvori novi session (s novim ili već postojećim userID)
-* Ako već postoji session s primljenim ID-om, ali je IP različit:
-    * Dodaj novi zapis u SESSION_IP s sessionID i novim IP-om i zapiši novi IP u lastIP (za brzi dohvat zadnjeg IP-a da ne trebamo stalno JOIN-ati SESSION i SESSION_IP ako nas samo zanima zadnji IP).
+* Ako već postoji user s primljenim ID-om, ali je IP različit:
+    * Dodaj novi zapis u USER_IP s userID i novim IP-om i zapiši novi IP u lastIP (za brzi dohvat zadnjeg IP-a da ne trebamo stalno JOIN-ati USER i USER_IP ako nas samo zanima zadnji IP).
 * Stvori novi zapis u REQUEST:
-    * Zapisati sessionID
+    * Zapisati userID
     * Spremiti tekst koji je poslan na ispravljanje u requestText
         * Dodati mogućnost korisniku da se NE sprema (radi privatnosti), npr. preko parametra skripti za ispravljanje slično kao i kontekst.
     * Spremiti vremena timeRequested i timeProcessed
@@ -46,52 +43,40 @@ Prikupljene stvari spremiti u bazu podataka.
 
 ## 2.1. Korisnik
 ```
-USER = (userID, timeAppeared)
+USER = (userID, timeAppeared, lastIP)
 K = (userID)
 
 Tipovi podataka:
 userID - (HEX) TEXT - vrijednost HascheckUserID (primjer userID-a: 75b14409-c90d-475e-b865-dd689738a683).
 timeAppeared - DATETIME - kada se pojavi novi ID kojeg još nemamo u bazi, dodaje se novi korisnik s tim ID-om. I onda naravno to vrijeme zapišemo.
-```
-
-## 2.2. Session
-```
-SESSION = (sessionID, userID, lastIP)
-K = (sessionID)
-
-Tipovi podataka:
-sessionID - (HEX) TEXT- vrijednost HasekSID (primer sessionID-a: vjerojatno isto kao i za userID).
-userID - strani ključ referencira USER.userID
 lastIP - TEXT
-
-Kada se pojavi novi sessionID kojeg još nemamo u bazu, dodaje se novi session s tim ID-om. Pridružuje mu se korisnik i njegov IP.
 ```
 
-## 2.3. Session IP
+## 2.2. User IP
 ```
-SESSION_IP = (sessionID, IP)
-K = (sessionID, IP)
+USER_IP = (userID, IP)
+K = (userID, IP)
 
 Tipovi podataka:
 IP - TEXT
-sessionID - strani ključ refenrencira SESSION.sessionID
+userID - strani ključ refenrencira USER.userID
 ```
 
-## 2.4. Zahtjev
+## 2.3. Zahtjev
 ```
-REQUEST = (reqID, sessionID, requestText, textLength, timeRequested, timeProcessed)
+REQUEST = (reqID, userID, requestText, textLength, timeRequested, timeProcessed)
 K = (reqID)
 
 Tipovi podataka:
 reqID - INT AUTONUMBER
 requestText - TEXT - možda radi privatnosti ne zapisujemo
 reqTextLength - INT - svakako zapisujemo dužinu teksta (ili broj riječi u tekstu ili dužinu stringa)
-sessionID - strani ključ refenrencira SESSION.sessionID
+userID - strani ključ refenrencira USER.userID
 timeRequested - DATETIME
 timeProcessed - DATETIME
 ```
 
-## 2.5. Tip pogreške
+## 2.4. Tip pogreške
 ```
 ERROR_TYPE = (errorTypeID, errorTypeDesc)
 K = (errorTypeID)
@@ -103,7 +88,7 @@ errorTypeID - TEXT - primjeri mogućih vrijednosti: -kk-, -gg-, itd. Označavaju
 errorTypeDecs - TEXT
 ```
 
-## 2.6. Pogreške
+## 2.5. Pogreške
 ```
 ERROR = (errorID, errorTypeID, errorPhrase, numOccur, correctedTo)
 K = (errorID)
@@ -116,7 +101,7 @@ numOccur - INT
 correctedTo - TEXT
 ```
 
-## 2.7. Pogreške zahtjeva
+## 2.6. Pogreške zahtjeva
 ```
 REQUEST_ERROR = (errorID, reqID)
 K = (errorID, reqID)

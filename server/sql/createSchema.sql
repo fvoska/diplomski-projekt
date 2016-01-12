@@ -3,39 +3,29 @@ CREATE SCHEMA `ispraviMe`;
 CREATE TABLE `ispraviMe`.`user` (
   `userID` VARCHAR(75) NOT NULL,
   `timeAppeard` DATETIME NOT NULL,
+  `lastIP` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`userID`));
 
-CREATE TABLE `ispraviMe`.`session` (
-  `sessionID` VARCHAR(75) NOT NULL,
+CREATE TABLE `ispraviMe`.`user_ip` (
   `userID` VARCHAR(75) NOT NULL,
-  `lastIP` VARCHAR(15) NULL,
-  PRIMARY KEY (`sessionID`),
-  CONSTRAINT `userID`
+  `IP` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`userID`, `IP`),
+  CONSTRAINT `uIP`
     FOREIGN KEY (`userID`)
     REFERENCES `ispraviMe`.`user` (`userID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
-CREATE TABLE `ispraviMe`.`session_ip` (
-  `sessionID` VARCHAR(75) NOT NULL,
-  `IP` VARCHAR(15) NOT NULL,
-  PRIMARY KEY (`IP`, `sessionID`),
-  CONSTRAINT `sID`
-    FOREIGN KEY (`sessionID`)
-    REFERENCES `ispraviMe`.`session` (`sessionID`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
-
 CREATE TABLE `ispraviMe`.`request` (
   `reqID` INT NOT NULL AUTO_INCREMENT,
-  `requestText` VARCHAR(999) NULL,
+  `requestText` TEXT NULL,
   `reqTextLength` INT NULL,
-  `sessionID` VARCHAR(75) NOT NULL,
+  `userID` VARCHAR(75) NOT NULL,
   `timeRequested` DATETIME NULL,
   `timeProcessed` DATETIME NULL,
   PRIMARY KEY (`reqID`),
-    FOREIGN KEY (`sessionID`)
-    REFERENCES `ispraviMe`.`session` (`sessionID`)
+    FOREIGN KEY (`userID`)
+    REFERENCES `ispraviMe`.`user` (`userID`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
