@@ -1,5 +1,7 @@
-var app = angular.module('diplomski-projekt', ['ngRoute', 'chieffancypants.loadingBar', 'ngAnimate'])
-.config(function(cfpLoadingBarProvider) {
+var app = angular.module('diplomski-projekt', ['ngRoute', 'chieffancypants.loadingBar', 'ngAnimate']);
+
+// Animations
+app.config(function(cfpLoadingBarProvider) {
   cfpLoadingBarProvider.includeSpinner = false;
 });
 
@@ -50,9 +52,18 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 app.run(['$rootScope', '$route', function($rootScope, $route) {
+  // All routes should have access to config and translations.
   $rootScope.config = config;
   $rootScope.trans = trans;
+
+  // Clean route details at route change start.
+  $rootScope.$on('$routeChangeStart', function() {
+    $rootScope.title_detail = '';
+  });
+
+  // Route changed.
   $rootScope.$on('$routeChangeSuccess', function() {
+    // Update navbar.
     $rootScope.title = $route.current.title;
     if ($route.current.redirectTo == '/') {
       $('.sidebar-nav').find('.active').removeClass('active');

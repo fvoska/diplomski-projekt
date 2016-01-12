@@ -11,7 +11,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
 
   $scope.userId = $routeParams.id;
   if ($scope.userId) {
-    $rootScope.title_detail = $scope.userId;
+    $rootScope.title_detail = ' ' + $scope.userId;
   }
 
   $(document).ready(function() {

@@ -11,7 +11,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
 
   $scope.requestId = $routeParams.id;
   if ($scope.requestId) {
-    $rootScope.title_detail = $scope.requestId;
+    $rootScope.title_detail = ' ' + $scope.requestId;
   }
 
   $(document).ready(function() {

@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title ngCloak>{{ trans(title) }} {{ title_detail }} - {{trans('application_title')}}</title>
+    <title ng-bind="trans(title) + title_detail + ' - ' + trans('application_title')" ngCloak>Diplomski projekt</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo $base_url; ?>includes/css/bootstrap.min.css" rel="stylesheet">
