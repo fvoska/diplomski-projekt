@@ -25,6 +25,6 @@ $request['time'] = '2016-01-01 16:20 GMT';
 $request['processing'] = '1.45s';
 $request['numErrors'] = '1';
 array_push($data['data'], $request);
-
+sleep(1);
 echo json_encode($data);
 ?>

@@ -1,46 +1,38 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
+    display: none !important;
 }
-
 .fader.ng-enter {
-  transition:0.25s linear all;
-  opacity:0;
+    transition: 0.25s linear all;
+    opacity: 0;
 }
-
 .fader.ng-enter.ng-enter-active {
-  opacity:1;
+    opacity: 1;
 }
-
 .numReq {
     width: 8em!important;
 }
-
 td {
     line-height: 35px!important;
     vertical-align: middle;
     text-align: center;
 }
-
 .detailsSubtitle {
     text-align: left;
     font-weight: bold;
 }
-
 @media(min-width:768px) {
     .detailsSubtitle {
         text-align: right;
         font-weight: bold;
     }
 }
-
 .row-user-details {
     line-height: 35px;
 }
-
 .btn-back {
-    margin-top: 1.5em; margin-left: -1.25em;
+    margin-top: 1.5em;
+    margin-left: -1.25em;
 }
-
 .ipHistory {
     display: inline-block;
     color: #333;
@@ -49,45 +41,93 @@ td {
     border: 1px solid #ddd;
     padding: 0 0.5em;
 }
-
 input.footer-search {
     width: 100%!important;
 }
-
 #dataTables-users tfoot th {
     border-top-width: 3px;
     border-left: none;
     border-bottom: none;
 }
-
 #dataTables-errors tfoot th {
     border-top-width: 3px;
     border-left: none;
     border-bottom: none;
 }
-
 #dataTables-requests tfoot th {
     border-top-width: 3px;
     border-left: none;
     border-bottom: none;
 }
-
 #dataTables-users_filter {
     display: none;
 }
-
 #dataTables-errors_filter {
     display: none;
 }
-
 #dataTables-requests_filter {
     display: none;
 }
-
-.topRight {
-
-}
-
+.topRight {}
 .bottomRight {
     opacity: 0;
+}
+.dataTables_processing {
+    top: 25px!important;
+    height: 100%!important;
+    font-size: 1.5em!important;
+    padding-top: 35px!important;
+}
+.loader, .loader:before, .loader:after {
+    background: #999;
+    -webkit-animation: load1 1s infinite ease-in-out;
+    animation: load1 1s infinite ease-in-out;
+    width: 1em;
+    height: 100%;
+}
+.loader:before, .loader:after {
+    position: absolute;
+    top: 0;
+    content: '';
+}
+.loader:before {
+    left: -1.5em;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+.loader {
+    text-indent: -9999em;
+    margin: auto;
+    position: absolute;
+    top:33%;
+    left:50%;
+    font-size: 11px;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+.loader:after {
+    left: 1.5em;
+}
+@-webkit-keyframes load1 {
+    0%, 80%, 100% {
+        box-shadow: 0 0 #999;
+        height: 4em;
+    }
+    40% {
+        box-shadow: 0 -2em #999;
+        height: 5em;
+    }
+}
+@keyframes load1 {
+    0%, 80%, 100% {
+        box-shadow: 0 0 #999;
+        height: 4em;
+    }
+    40% {
+        box-shadow: 0 -2em #999;
+        height: 5em;
+    }
 }

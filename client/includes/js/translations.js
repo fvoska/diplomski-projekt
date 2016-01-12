@@ -4,13 +4,6 @@ var translations = {
     'application_title': 'Diplomski Projekt',
     'toggle_nav': 'Navigacija',
     'back': 'Vrati se',
-    'actions': 'Akcije',
-    'details': 'Detalji',
-    'filter_by': 'Filtriraj po',
-    'first': 'Prva',
-    'last': 'Zadnja',
-    'next': 'Sljedeća',
-    'previous': 'Prethodna',
 
     /* Homepage */
     'home': 'Naslovna',
@@ -51,6 +44,14 @@ var translations = {
     'info': 'Stranica _PAGE_ od _PAGES_',
     'infoEmpty': 'Nema zapisa',
     'infoFiltered': '(filtrirano iz ukupno _MAX_ zapisa)',
+    'actions': 'Akcije',
+    'details': 'Detalji',
+    'filter_by': 'Filtriraj po',
+    'first': 'Prva',
+    'last': 'Zadnja',
+    'next': 'Sljedeća',
+    'previous': 'Prethodna',
+    'processing': '<div class="loader">Obrađujem</div>',
 
     /* Page 2 & 3 navigation parent */
     'pages23': 'More pages',

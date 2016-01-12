@@ -19,6 +19,6 @@ $error['suspicious'] = 'čovijek';
 $error['type'] = 'Pravopisna';
 $error['numOccur'] = '1';
 array_push($data['data'], $error);
-
+sleep(1);
 echo json_encode($data);
 ?>
