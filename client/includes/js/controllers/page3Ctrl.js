@@ -12,6 +12,6 @@ angular.module('diplomski-projekt').controller('page3Ctrl', function($scope, $ht
   $(document).ready(function() {
     $timeout(function() {
       $scope.complete();
-    }, 250);
+    }, 125);
   });
 });

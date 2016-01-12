@@ -2,23 +2,6 @@ var app = angular.module('diplomski-projekt', ['ngRoute', 'chieffancypants.loadi
 .config(function(cfpLoadingBarProvider) {
   cfpLoadingBarProvider.includeSpinner = false;
 });
-app.animation('.fader', function() {
-  return {
-    enter: function(element, done) {
-      element.css('display', 'none');
-      element.fadeIn(250, done);
-      return function() {
-        element.stop();
-      }
-    },
-    leave: function(element, done) {
-      element.fadeOut(250, done)
-      return function() {
-        element.stop();
-      }
-    }
-  }
-});
 
 app.config(function($routeProvider, $locationProvider) {
   // Set up routes.
@@ -28,10 +11,25 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: config.baseUrl + '/views/home.html',
       title: 'home'
     })
-    .when('/page1', {
-      navId: 'page1',
-      templateUrl: config.baseUrl + '/views/page1.html',
-      title: 'page1'
+    .when('/users', {
+      navId: 'users',
+      templateUrl: config.baseUrl + '/views/users.html',
+      title: 'users'
+    })
+    .when('/users/:id', {
+      navId: 'users',
+      templateUrl: config.baseUrl + '/views/usersDetails.html',
+      title: 'usersDetails'
+    })
+    .when('/users/:id/requests', {
+      navId: 'users',
+      templateUrl: config.baseUrl + '/views/usersRequests.html',
+      title: 'usersRequests',
+    })
+    .when('/requests/:id', {
+      navId: 'requests',
+      templateUrl: config.baseUrl + '/views/requestsDetails.html',
+      title: 'requestsDetails',
     })
     .when('/page2', {
       navId: 'page2',
@@ -43,8 +41,8 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: config.baseUrl + '/views/page3.html',
       title: 'page3'
     })
-    .otherwise({
-      redirectTo: config.baseUrl + '/'
+    .otherwise({ // TODO: 404
+      redirectTo: '/'
     });
 
   // Use the HTML5 History API.
@@ -52,6 +50,7 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 app.run(['$rootScope', '$route', function($rootScope, $route) {
+  $rootScope.config = config;
   $rootScope.trans = trans;
   $rootScope.$on('$routeChangeSuccess', function() {
     $rootScope.title = $route.current.title;

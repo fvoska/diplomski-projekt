@@ -1,4 +1,4 @@
-angular.module('diplomski-projekt').controller('page2Ctrl', function($scope, $http, $timeout, cfpLoadingBar) {
+angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $rootScope, $routeParams, $http, $timeout, cfpLoadingBar) {
   $scope.start = function() {
     cfpLoadingBar.start();
   };
@@ -8,6 +8,11 @@ angular.module('diplomski-projekt').controller('page2Ctrl', function($scope, $ht
   }
 
   $scope.start();
+
+  $scope.userId = $routeParams.id;
+  if ($scope.userId) {
+    $rootScope.title_detail = $scope.userId;
+  }
 
   $(document).ready(function() {
     $timeout(function() {

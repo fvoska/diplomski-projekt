@@ -1,0 +1,113 @@
+<div id="requestsContainer" ng-controller="requestsCtrl">
+    <button onclick="window.history.back();" type="button" class="btn btn-link btn-back">
+        <i class="fa fa-angle-left fa-fw"></i> {{ trans('back') }}
+    </button>
+    <br>
+    <br>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 style="margin-top: 0;" class="page-header">{{ trans('requestsDetails') }} {{ requestId }}</h1>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('request_id') }}
+        </div>
+        <div class="col-sm-9">
+            {{ requestId }}
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('req_time') }}
+        </div>
+        <div class="col-sm-9">
+            2016-01-01 16:20 GMT
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('req_processing') }}
+        </div>
+        <div class="col-sm-9">
+            1.45s
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('num_errors') }}
+        </div>
+        <div class="col-sm-9">
+            1
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ trans('errors') }}
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-errors">
+                            <thead>
+                                <tr>
+                                    <th>{{ trans("error_id") }}</th>
+                                    <th>{{ trans("suspicious_word") }}</th>
+                                    <th>{{ trans("error_type") }}</th>
+                                    <th>{{ trans("num_occur") }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-errors').DataTable({
+            responsive: true,
+            'language': {
+                'lengthMenu': trans('lengthMenu'),
+                'search': trans('search'),
+                'zeroRecords': trans('zeroRecords'),
+                'info': trans('info'),
+                'infoEmpty': trans('infoEmpty'),
+                'infoFiltered': trans('infoFiltered')
+            },
+            'processing': true,
+            'serverSide': true,
+            'ajax': 'test3.php',
+            'columns': [
+                { 'data': 'id' },
+                { 'data': 'suspicious' },
+                { 'data': 'type' },
+                { 'data': 'numOccur' }
+            ]
+        });
+    });
+    </script>
+</div>

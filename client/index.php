@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="diplomski-projekt" ngCloak>
+<?php echo $_GET['action']; ?>
 <?php $base_url = "/grupa84/app/"; ?>
+<?php $base_url = "/diplomski/client/"; ?>
 <head>
     <base href="<?php echo $base_url; ?>">
 
@@ -11,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ trans(title) }} - {{trans('application_title')}}</title>
+    <title>{{ trans(title) }} {{ title_detail }} - {{trans('application_title')}}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo $base_url; ?>includes/css/bootstrap.min.css" rel="stylesheet">
@@ -27,6 +29,12 @@
 
     <!-- Loading Bar -->
     <link href="<?php echo $base_url; ?>includes/css/loading-bar.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- DataTables CSS -->
+    <link href="<?php echo $base_url; ?>includes/css/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="<?php echo $base_url; ?>includes/css/morris.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="<?php echo $base_url; ?>includes/css/style.css" rel="stylesheet">
@@ -56,6 +64,14 @@
     <!-- Custom Theme JavaScript -->
     <script src="<?php echo $base_url; ?>includes/js/libs/sb-admin-2.js"></script>
 
+    <!-- DataTables JavaScript -->
+    <script src="<?php echo $base_url; ?>includes/js/libs/jquery.dataTables.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/dataTables.bootstrap.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="<?php echo $base_url; ?>includes/js/libs/raphael.min.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/libs/morris.min.js"></script>
+
     <!-- Config -->
     <script src="<?php echo $base_url; ?>includes/js/config.js"></script>
 
@@ -67,7 +83,8 @@
 
     <!-- Controllers -->
     <script src="<?php echo $base_url; ?>includes/js/controllers/homeCtrl.js"></script>
-    <script src="<?php echo $base_url; ?>includes/js/controllers/page1Ctrl.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/controllers/usersCtrl.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/controllers/requestsCtrl.js"></script>
     <script src="<?php echo $base_url; ?>includes/js/controllers/page2Ctrl.js"></script>
     <script src="<?php echo $base_url; ?>includes/js/controllers/page3Ctrl.js"></script>
 
@@ -307,7 +324,10 @@
                             <a href="<?php echo $base_url; ?>" id="home" class="active"><i class="fa fa-home fa-fw"></i> {{ trans('home') }}</a>
                         </li>
                         <li>
-                            <a href="<?php echo $base_url; ?>page1" id="page1"><i class="fa fa-eye fa-fw"></i> {{ trans('page1') }}</a>
+                            <a href="<?php echo $base_url; ?>users" id="users"><i class="fa fa-user fa-fw"></i> {{ trans('users') }}</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo $base_url; ?>requests" id="requests"><i class="fa fa-file-text fa-fw"></i> {{ trans('requests') }}</a>
                         </li>
 						<li>
                             <a href="#"><i class="fa fa-folder fa-fw"></i> {{ trans('pages23') }}<span class="fa arrow"></span></a>
