@@ -10,7 +10,7 @@ CREATE TABLE `ispraviMe`.`user_ip` (
   `userID` VARCHAR(75) NOT NULL,
   `IP` VARCHAR(45) NOT NULL,
   `time` DATETIME NOT NULL,
-  PRIMARY KEY (`userID`, `IP`),
+  PRIMARY KEY (`userID`, `IP`,`time`),
   CONSTRAINT `uIP`
     FOREIGN KEY (`userID`)
     REFERENCES `ispraviMe`.`user` (`userID`)
