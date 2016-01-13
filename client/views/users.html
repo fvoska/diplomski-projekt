@@ -13,11 +13,11 @@
                         <table class="table table-striped table-bordered table-hover" id="dataTables-users">
                             <thead>
                                 <tr>
-                                    <th>{{ trans('user_id') }}</th>
-                                    <th>{{ trans('first_appear') }}</th>
-                                    <th>{{ trans('num_requests') }}</th>
-                                    <th>{{ trans('last_ip') }}</th>
-                                    <th class='topRight'>{{ trans('actions') }}</th>
+                                    <th>user_id</th>
+                                    <th>first_appear</th>
+                                    <th>num_requests</th>
+                                    <th>last_ip</th>
+                                    <th class='topRight'>actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,61 +45,7 @@
 
     <script>
     $(document).ready(function() {
-        $('#dataTables-users tfoot th').each( function () {
-            var title = $(this).text();
-            if (title != 'actions') {
-                $(this).html('<input type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" />');
-            }
-        });
 
-        var table = $('#dataTables-users').DataTable({
-            responsive: true,
-            'language': {
-                'lengthMenu': trans('lengthMenu'),
-                'search': trans('search'),
-                'zeroRecords': trans('zeroRecords'),
-                'info': trans('info'),
-                'infoEmpty': trans('infoEmpty'),
-                'infoFiltered': trans('infoFiltered'),
-                'processing': trans('processing'),
-                'paginate': {
-                    'first': trans('first'),
-                    'last': trans('last'),
-                    'next': trans('next'),
-                    'previous': trans('previous')
-                }
-            },
-            'processing': true,
-            'serverSide': true,
-            'ajax': 'test.php',
-            'columns': [
-                { 'data': 'id' },
-                { 'data': 'first_appear' },
-                { 'data': 'num_requests' },
-                { 'data': 'last_ip' },
-                { 'data': 'button' }
-            ],
-            'columnDefs': [
-                {
-                    'orderable': false,
-                    'targets': -1,
-                    'render': function (data, type, full, meta) {
-                        return '<a href="' + config.baseUrl + '/users/' + full.id + '" class="btn btn-primary">' + trans('details') + '</a>';
-                    }
-                }
-            ]
-        });
-
-        table.columns().every(function() {
-            var that = this;
-            $('input', this.footer()).on('keydown', function (ev) {
-                if (ev.keyCode == 13) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
     });
     </script>
 </div>

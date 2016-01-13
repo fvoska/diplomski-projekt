@@ -8,9 +8,6 @@
 .fader.ng-enter.ng-enter-active {
     opacity: 1;
 }
-.numReq {
-    width: 8em!important;
-}
 td {
     line-height: 35px!important;
     vertical-align: middle;
@@ -40,6 +37,7 @@ td {
     border-radius: 3px;
     border: 1px solid #ddd;
     padding: 0 0.5em;
+    margin-right: 0.5em;
 }
 input.footer-search {
     width: 100%!important;
@@ -102,8 +100,8 @@ input.footer-search {
     text-indent: -9999em;
     margin: auto;
     position: absolute;
-    top:33%;
-    left:50%;
+    top: 33%;
+    left: 50%;
     font-size: 11px;
     -webkit-transform: translateZ(0);
     -ms-transform: translateZ(0);
@@ -133,4 +131,8 @@ input.footer-search {
         box-shadow: 0 -2em #999;
         height: 5em;
     }
+}
+.spinner {
+    width: 1em;
+    height: 1em;
 }

@@ -5,6 +5,7 @@ $data = array();
 
 $data['recordsTotal'] = 1;
 $data['recordsFiltered'] = 1;
+$data['requestID'] = $_GET['id'];
 /*
 "draw": 1,
   "recordsTotal": 57,
