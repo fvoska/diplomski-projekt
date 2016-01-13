@@ -2,7 +2,7 @@ CREATE SCHEMA `ispraviMe`;
 
 CREATE TABLE `ispraviMe`.`user` (
   `userID` VARCHAR(75) NOT NULL,
-  `timeAppeard` DATETIME NOT NULL,
+  `timeAppeared` DATETIME NOT NULL,
   `lastIP` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`userID`));
 
