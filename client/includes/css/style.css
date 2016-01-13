@@ -140,3 +140,22 @@ input.footer-search {
     display: block;
     margin: auto;
 }
+.fader2{
+    -webkit-transition: linear 0.25s;
+    -moz-transition: linear 0.25s;
+    -ms-transition: linear 0.25s;
+    -o-transition: linear 0.25s;
+    transition: linear 0.25s;
+}
+.fader2.ng-enter{
+    opacity: 0;
+}
+.fader2.ng-enter-active{
+    opacity: 1;
+}
+.fader2.ng-leave{
+    opacity: 1;
+}
+.fader2.ng-leave-active{
+    opacity: 0;
+}

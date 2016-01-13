@@ -20,6 +20,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
         break;
       // Details view.
       default:
+        // TODO: ajax
         // Header translations.
         $('#dataTables-errors thead th').each(function() {
           var title = $(this).text();

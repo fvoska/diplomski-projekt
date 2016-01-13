@@ -47,6 +47,6 @@ $error_p['avg_word_count'] = 123;
 $error_p['avg_error_count'] = 12;
 $user['request_stats']['error_percentage'] = $error_p;
 
-sleep(1);
+usleep(500000);
 echo json_encode($user);
 ?>

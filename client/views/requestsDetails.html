@@ -17,7 +17,7 @@
             {{ trans('request_id') }}
         </div>
         <div class="col-sm-9">
-            {{ requestID }}
+            <span ng-if="requestID" class="fader2" ng-bind="requestID"></span>
         </div>
     </div>
     <!-- /.row -->

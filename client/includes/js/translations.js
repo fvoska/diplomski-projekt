@@ -7,6 +7,9 @@ var translations = {
 
     /* Homepage */
     'home': 'Naslovna',
+    'errors_found': 'Pronađenih pogrešaka',
+    'requests_processed': 'Obrađenih zahtjeva',
+    'users_count': 'Korisnika',
 
     /* Users */
     'users': 'Korisnici',
@@ -20,9 +23,9 @@ var translations = {
     'user_details_sessions': 'Sjednice',
     'user_details_requests': 'Zahtjevi za ispravljanjem',
     'chart_error_types': 'Udio tipova pogrešaka',
-    'error_percentage': 'Učestalost grešaka u zahtjevima',
+    'error_percentage': 'Učestalost pogrešaka u zahtjevima',
     'request_word_count_avg': 'Prosječan broj riječi po zahtjevu',
-    'request_error_count_avg': 'Prosječan broj grešaka po zahtjevu',
+    'request_error_count_avg': 'Prosječan broj pogrešaka po zahtjevu',
     'request_error_percent': 'Postotak pogrešaka',
     'chart_activity_monthly': 'Broj zahtjeva po mjesecima',
 
@@ -32,10 +35,10 @@ var translations = {
     'request_id': 'ID',
     'req_time': 'Vrijeme zahtjeva',
     'req_processing': 'Vrijeme obrade',
-    'num_errors': 'Broj grešaka',
+    'num_errors': 'Broj pogrešaka',
 
     /* Errors */
-    'errors': 'Greške',
+    'errors': 'Pogreške',
     'error_id': 'ID',
     'suspicious_word': 'Pogrešna riječ/fraza',
     'error_type': 'Tip pogreške',

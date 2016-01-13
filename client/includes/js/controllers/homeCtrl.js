@@ -10,8 +10,19 @@ angular.module('diplomski-projekt').controller('homeCtrl', function($scope, $htt
   $scope.start();
 
   $(document).ready(function() {
-    $timeout(function() {
+    $http({
+      method: 'GET',
+      url: 'getSummary.php'
+    })
+    .then(function successCallback(response) {
+      $scope.numUsers = response.data.count.users;
+      $scope.numRequests = response.data.count.requests;
+      $scope.numErrors = response.data.count.errors;
       $scope.complete();
-    }, 125);
+    }, function errorCallback(response) {
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+      $scope.complete();
+    });
   });
 });

@@ -188,9 +188,5 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
         });
         break;
     }
-
-    $timeout(function() {
-      //$scope.complete();
-    }, 125);
   });
 });
