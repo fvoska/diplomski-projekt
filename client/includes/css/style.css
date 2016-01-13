@@ -136,3 +136,7 @@ input.footer-search {
     width: 1em;
     height: 1em;
 }
+.spinner_large {
+    display: block;
+    margin: auto;
+}

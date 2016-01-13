@@ -20,7 +20,11 @@ var translations = {
     'user_details_sessions': 'Sjednice',
     'user_details_requests': 'Zahtjevi za ispravljanjem',
     'chart_error_types': 'Udio tipova pogrešaka',
-    'chart_activity': 'Broj zahtjeva po godinama',
+    'error_percentage': 'Učestalost grešaka u zahtjevima',
+    'request_word_count_avg': 'Prosječan broj riječi po zahtjevu',
+    'request_error_count_avg': 'Prosječan broj grešaka po zahtjevu',
+    'request_error_percent': 'Postotak pogrešaka',
+    'chart_activity_monthly': 'Broj zahtjeva po mjesecima',
 
     /* Requests */
     'requests': 'Zahtjevi',

@@ -17,7 +17,7 @@
             {{ trans('user_id') }}
         </div>
         <div class="col-sm-9" ng-bind="userID">
-            <img ng-hide="userID" class="spinner" src="includes/images/25.gif" />
+            <img ng-hide="userID" class="spinner" src="includes/images/spinner.gif" />
             {{ userID }}
         </div>
     </div>
@@ -28,7 +28,7 @@
             {{ trans('first_appear') }}
         </div>
         <div class="col-sm-9">
-            <img ng-hide="firstAppear" class="spinner" src="includes/images/25.gif" />
+            <img ng-hide="firstAppear" class="spinner" src="includes/images/spinner.gif" />
             {{ firstAppear }}
         </div>
     </div>
@@ -39,7 +39,7 @@
             {{ trans('num_requests') }}
         </div>
         <div class="col-sm-9">
-            <img ng-hide="numRequests" class="spinner" src="includes/images/25.gif" />
+            <img ng-hide="numRequests" class="spinner" src="includes/images/spinner.gif" />
             {{ numRequests }}
         </div>
     </div>
@@ -50,7 +50,7 @@
             {{ trans('ip_history') }}
         </div>
         <div class="col-sm-9">
-            <img ng-hide="ipHistory" class="spinner" src="includes/images/25.gif" />
+            <img ng-hide="ipHistory" class="spinner" src="includes/images/spinner.gif" />
             <span class="ipHistory" ng-repeat="ip in ipHistory">{{ ip }}</span>
         </div>
     </div>
@@ -76,6 +76,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
+                    <img ng-hide="errorTypes" class="spinner_large" src="includes/images/spinner.gif" />
                     <div id="morris-donut-chart-error-types"></div>
                 </div>
                 <!-- /.panel-body -->
@@ -86,11 +87,34 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ trans('chart_activity') }}
+                    {{ trans('chart_activity_monthly') }}
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <div id="morris-line-chart-activity"></div>
+                    <img ng-hide="activityMonthly" class="spinner_large" src="includes/images/spinner.gif" />
+                    <div id="morris-line-chart-activity-monthly"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ trans('error_percentage') }}
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <img ng-hide="errorPercentage" class="spinner_large" src="includes/images/spinner.gif" />
+                    <div ng-show="errorPercentage">
+                        {{ trans('request_word_count_avg') }}: {{ avgWordCount }}<br>
+                        {{ trans('request_error_count_avg') }}: {{ avgErrorCount }}<br>
+                        {{ trans('request_error_percent') }}: {{ (avgErrorCount * 100 / avgWordCount).toFixed(2) }}%<br>
+                    </div>
                 </div>
                 <!-- /.panel-body -->
             </div>

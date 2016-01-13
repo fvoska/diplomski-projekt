@@ -10,11 +10,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
   $scope.userID = $routeParams.id;
   if ($scope.userID) {
     $rootScope.title_detail = ' ' + $scope.userID;
-  }
-
-  $scope.firstAppear = undefined;
-  $scope.numRequests = undefined;
-  $scope.ipHistory = undefined;
+  };
 
   $(document).ready(function() {
     var location = $location.$$path.split('/');
@@ -84,6 +80,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             }
           });
         });
+        $scope.complete();
         break;
       // User's requests view.
       case 'requests':
@@ -150,6 +147,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             }
           });
         });
+        $scope.complete();
         break;
       // Details view.
       default:
@@ -158,66 +156,41 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
           url: 'getUsersDetails.php?id=' + $scope.userID
         })
         .then(function successCallback(response) {
-          console.log(response);
           $scope.firstAppear = response.data.first_appear;
-          $scope.numRequests = response.data.num_requests;
+          $scope.numRequests = response.data.request_stats.num_requests;
           $scope.ipHistory = response.data.ip_history;
-          // this callback will be called asynchronously
-          // when the response is available
+          $scope.errorTypes = response.data.error_stats;
+          $scope.activityMonthly = response.data.usage_stats.monthly;
+          $scope.requestStats = response.data.request_stats;
+          $scope.errorPercentage = $scope.requestStats.error_percentage;
+          $scope.avgWordCount = $scope.errorPercentage.avg_word_count;
+          $scope.avgErrorCount = $scope.errorPercentage.avg_error_count;
+
+          Morris.Donut({
+            element: 'morris-donut-chart-error-types',
+            data: $scope.errorTypes,
+            colors: ['#d9534f']
+          });
+
+          Morris.Area({
+            element: 'morris-line-chart-activity-monthly',
+            data: $scope.activityMonthly,
+            xkey: 'month',
+            ykeys: ['requests'],
+            labels: [trans('num_requests')],
+            lineColors: ['#337ab7']
+          });
+          $scope.complete();
         }, function errorCallback(response) {
           // called asynchronously if an error occurs
           // or server returns response with an error status.
-        });
-        // TODO: ajax
-        Morris.Donut({
-          element: 'morris-donut-chart-error-types',
-          data: [{
-            label: "Drugo",
-            value: 12
-          }, {
-            label: "Pravopisna",
-            value: 30
-          }, {
-            label: "Gramatička",
-            value: 20
-          }],
-          colors: ['#d9534f']
-        });
-
-        Morris.Area({
-          element: 'morris-line-chart-activity',
-          data: [{
-            year: '2006',
-            requests: 100
-          }, {
-            year: '2007',
-            requests: 75
-          }, {
-            year: '2008',
-            requests: 50
-          }, {
-            year: '2009',
-            requests: 75
-          }, {
-            year: '2010',
-            requests: 50
-          }, {
-            year: '2011',
-            requests: 75
-          }, {
-            year: '2012',
-            requests: 100
-          }],
-          xkey: 'year',
-          ykeys: ['requests'],
-          labels: ['Broj zahtjeva'],
-          lineColors: ['#337ab7']
+          $scope.complete();
         });
         break;
     }
 
     $timeout(function() {
-      $scope.complete();
+      //$scope.complete();
     }, 125);
   });
 });
