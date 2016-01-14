@@ -17,24 +17,20 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
     switch (location[location.length - 1]) {
       // Requests list view.
       case 'requests':
-        break;
-      // Details view.
-      default:
-        // TODO: ajax
         // Header translations.
-        $('#dataTables-errors thead th').each(function() {
+        $('#dataTables-requests thead th').each(function() {
           var title = $(this).text();
           $(this).html(trans(title));
         });
         // Footer translations.
-        $('#dataTables-errors tfoot th').each(function() {
+        $('#dataTables-requests tfoot th').each(function() {
           var title = $(this).text();
           if (title != 'actions') {
             $(this).html('<input type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" />');
           }
         });
         // Create DataTable.
-        var table = $('#dataTables-errors').DataTable({
+        var table = $('#dataTables-requests').DataTable({
           'responsive': true,
           'language': {
             'lengthMenu': trans('lengthMenu'),
@@ -53,15 +49,114 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'getRequestsDetails.php?id=' + $scope.requestID,
+          'ajax': 'getRequests.php',
+          'columns': [{
+            'data': 'id'
+          }, {
+            'data': 'time'
+          }, {
+            'data': 'processing'
+          }, {
+            'data': 'numErrors'
+          }, {
+            'data': 'button'
+          }],
+          'columnDefs': [{
+            'orderable': false,
+            'targets': -1,
+            'render': function(data, type, full, meta) {
+              return '<a href="' + config.baseUrl + '/requests/' + full.id + '" class="btn btn-primary">' + trans('details') + '</a>';
+            }
+          }]
+        });
+        // Set search handler.
+        table.columns().every(function() {
+          var that = this;
+          $('input', this.footer()).on('keydown', function(ev) {
+            if (ev.keyCode == 13) {
+              that
+                .search(this.value)
+                .draw();
+            }
+          });
+        });
+        $scope.complete();
+        break;
+      // Details view.
+      default:
+        // Details.
+        $http({
+          method: 'GET',
+          url: 'getRequestsDetails.php?id=' + $scope.requestID
+        })
+        .then(function successCallback(response) {
+          $scope.requestID = response.data.id;
+          $scope.reqUser = response.data.user;
+          $scope.reqTime = response.data.time;
+          $scope.reqProcessing = response.data.processing_time;
+          $scope.reqErrors = response.data.num_errors;
+
+          $scope.complete();
+        }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+          $scope.complete();
+        });
+
+        // Errors.
+        // Header translations.
+        $('#dataTables-requests-errors thead th').each(function() {
+          var title = $(this).text();
+          $(this).html(trans(title));
+        });
+        // Footer translations.
+        $('#dataTables-requests-errors tfoot th').each(function() {
+          var title = $(this).text();
+          if (title != 'actions') {
+            $(this).html('<input type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" />');
+          }
+        });
+        // Create DataTable.
+        var table = $('#dataTables-requests-errors').DataTable({
+          'responsive': true,
+          'language': {
+            'lengthMenu': trans('lengthMenu'),
+            'search': trans('search'),
+            'zeroRecords': trans('zeroRecords'),
+            'info': trans('info'),
+            'infoEmpty': trans('infoEmpty'),
+            'infoFiltered': trans('infoFiltered'),
+            'processing': trans('processing'),
+            'paginate': {
+              'first': trans('first'),
+              'last': trans('last'),
+              'next': trans('next'),
+              'previous': trans('previous')
+            }
+          },
+          'processing': true,
+          'serverSide': true,
+          'ajax': 'getRequestsErrors.php?id=' + $scope.requestID,
           'columns': [{
             'data': 'id'
           }, {
             'data': 'suspicious'
           }, {
-            'data': 'type'
+            'data': 'type',
+            'render': function (data, type, full, meta) {
+              return trans(full.type);
+            }
           }, {
             'data': 'numOccur'
+          }, {
+            'data': 'button'
+          }],
+          'columnDefs': [{
+            'orderable': false,
+            'targets': -1,
+            'render': function(data, type, full, meta) {
+              return '<a href="' + config.baseUrl + '/errors/details/' + full.id + '" class="btn btn-primary">' + trans('details') + '</a>';
+            }
           }]
         });
         // Set search handler.
@@ -77,9 +172,5 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
         });
         break;
     }
-
-    $timeout(function() {
-      $scope.complete();
-    }, 125);
   });
 });

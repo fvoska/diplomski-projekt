@@ -85,19 +85,19 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
       // User's requests view.
       case 'requests':
         // Header translations.
-        $('#dataTables-requests thead th').each(function() {
+        $('#dataTables-users-requests thead th').each(function() {
           var title = $(this).text();
           $(this).html(trans(title));
         });
         // Footer translations.
-        $('#dataTables-requests tfoot th').each(function() {
+        $('#dataTables-users-requests tfoot th').each(function() {
           var title = $(this).text();
           if (title != 'actions') {
             $(this).html('<input type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" />');
           }
         });
         // Create DataTable.
-        var table = $('#dataTables-requests').DataTable({
+        var table = $('#dataTables-users-requests').DataTable({
           'responsive': true,
           'language': {
             'lengthMenu': trans('lengthMenu'),

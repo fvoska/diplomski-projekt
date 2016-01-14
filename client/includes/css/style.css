@@ -42,32 +42,20 @@ td {
 input.footer-search {
     width: 100%!important;
 }
-#dataTables-users tfoot th {
+table tfoot th {
     border-top-width: 3px;
     border-left: none;
     border-bottom: none;
     border-right: none;
 }
-#dataTables-errors tfoot th {
-    border-top-width: 3px;
-    border-left: none;
-    border-bottom: none;
-    border-right: none;
+.table tfoot th {
+    border-top-width: 3px!important;
+    border-left: none!important;
+    border-bottom: none!important;
+    border-right: none!important;
 }
-#dataTables-requests tfoot th {
-    border-top-width: 3px;
-    border-left: none;
-    border-bottom: none;
-    border-right: none;
-}
-#dataTables-users_filter {
-    display: none;
-}
-#dataTables-errors_filter {
-    display: none;
-}
-#dataTables-requests_filter {
-    display: none;
+.dataTables_filter {
+    display: none!important;
 }
 .topRight {}
 .bottomRight {

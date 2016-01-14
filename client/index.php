@@ -84,8 +84,7 @@
     <script src="<?php echo $base_url; ?>includes/js/controllers/homeCtrl.js"></script>
     <script src="<?php echo $base_url; ?>includes/js/controllers/usersCtrl.js"></script>
     <script src="<?php echo $base_url; ?>includes/js/controllers/requestsCtrl.js"></script>
-    <script src="<?php echo $base_url; ?>includes/js/controllers/page2Ctrl.js"></script>
-    <script src="<?php echo $base_url; ?>includes/js/controllers/page3Ctrl.js"></script>
+    <script src="<?php echo $base_url; ?>includes/js/controllers/errorsCtrl.js"></script>
 
 </head>
 

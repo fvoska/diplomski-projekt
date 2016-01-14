@@ -13,6 +13,7 @@ var translations = {
 
     /* Users */
     'users': 'Korisnici',
+    'user': 'Korisnik',
     'usersDetails': 'Detalji o korisniku',
     'usersRequests': 'Zahtjevi korisnika',
     'user_id': 'ID',
@@ -39,10 +40,25 @@ var translations = {
 
     /* Errors */
     'errors': 'Pogreške',
+    'errors_req': 'Pogreške zahtjeva',
+    'errorsGroup': 'Sumnjiva riječ',
+    'errorsDetails': 'Detalji pogreške',
     'error_id': 'ID',
     'suspicious_word': 'Pogrešna riječ/fraza',
     'error_type': 'Tip pogreške',
+    'num_total_occur': 'Ukupan broj pojavljivanja pogreške',
     'num_occur': 'Broj pojavljivanja pogreške u zahtjevu',
+
+    /* Error types */
+    'xx': 'Ekstremna',
+    'll': 'Značajna',
+    'mm': 'Umjerena',
+    'ss': 'Manja',
+    'cc': 'Neklasificirana',
+    'gg': 'Malo/veliko slovo',
+    'kk': 'Umiješani brojevi',
+    'GG': 'Gramatička',
+    'PP': 'Pleonazam',
 
     /* Tables */
     'lengthMenu': 'Prikaži _MENU_ zapisa po stranici',

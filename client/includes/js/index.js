@@ -28,20 +28,30 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: config.baseUrl + '/views/usersRequests.html',
       title: 'usersRequests',
     })
+    .when('/requests', {
+      navId: 'requests',
+      templateUrl: config.baseUrl + '/views/requests.html',
+      title: 'requests',
+    })
     .when('/requests/:id', {
       navId: 'requests',
       templateUrl: config.baseUrl + '/views/requestsDetails.html',
       title: 'requestsDetails',
     })
-    .when('/page2', {
-      navId: 'page2',
-      templateUrl: config.baseUrl + '/views/page2.html',
-      title: 'page2'
+    .when('/errors', {
+      navId: 'errors',
+      templateUrl: config.baseUrl + '/views/errors.html',
+      title: 'errors',
     })
-    .when('/page3', {
-      navId: 'page3',
-      templateUrl: config.baseUrl + '/views/page3.html',
-      title: 'page3'
+    .when('/errors/details/:id', {
+      navId: 'errors',
+      templateUrl: config.baseUrl + '/views/errorsDetails.html',
+      title: 'errorsDetails',
+    })
+    .when('/errors/group/:group', {
+      navId: 'errors',
+      templateUrl: config.baseUrl + '/views/errorsGroup.html',
+      title: 'errorsGroup',
     })
     .otherwise({ // TODO: 404
       redirectTo: '/'

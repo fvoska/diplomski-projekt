@@ -3,23 +3,12 @@ header('Content-Type: application/json');
 
 $data = array();
 
-$data['recordsTotal'] = 1;
-$data['recordsFiltered'] = 1;
-$data['requestID'] = $_GET['id'];
-/*
-"draw": 1,
-  "recordsTotal": 57,
-  "recordsFiltered": 57
-*/
-$data['data'] = array();
+$data['id'] = $_GET['id'];
+$data['user'] = '68da1748-259a-4a57-92d4-5f9b185e3cd7';
+$data['time'] = '2015-12-25 17:00 GMT';
+$data['processing_time'] = 1.24;
+$data['num_errors'] = 2;
 
-$error = array();
-
-$error['id'] = '94513';
-$error['suspicious'] = 'čovijek';
-$error['type'] = 'Pravopisna';
-$error['numOccur'] = '1';
-array_push($data['data'], $error);
 usleep(500000);
 echo json_encode($data);
 ?>
