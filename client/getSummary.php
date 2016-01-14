@@ -3,6 +3,8 @@ header('Content-Type: application/json');
 
 $data = array();
 
+
+// Jednostavno pobrojimo korisnike, zahtjeve i greške.
 $data['count'] = array();
 $data['count']['users'] = 1215;
 $data['count']['requests'] = 3216874;

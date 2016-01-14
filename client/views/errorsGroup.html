@@ -12,6 +12,51 @@
     </div>
     <!-- /.row -->
 
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('suspicious_word') }}
+        </div>
+        <div class="col-sm-9">
+            <span ng-hide="group"><i class="fa fa-spinner fa-spin"></i></span>
+            <span ng-if="group" class="fader2" ng-bind="group"></span>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('error_type') }}
+        </div>
+        <div class="col-sm-9">
+            <span ng-hide="type"><i class="fa fa-spinner fa-spin"></i></span>
+            <span ng-if="type" class="fader2" ng-bind="trans(type)"></span>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('num_total_occur') }}
+        </div>
+        <div class="col-sm-9">
+            <span ng-hide="numOccur"><i class="fa fa-spinner fa-spin"></i></span>
+            <span ng-if="numOccur" class="fader2" ng-bind="numOccur"></span>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row row-user-details">
+        <div class="col-sm-3 detailsSubtitle">
+            {{ trans('num_total_occur_req') }}
+        </div>
+        <div class="col-sm-9">
+            <span ng-hide="numOccurReq"><i class="fa fa-spinner fa-spin"></i></span>
+            <span ng-if="numOccurReq" class="fader2" ng-bind="numOccurReq"></span>
+            <span ng-if="errorReqPercent" class="fader2" ng-bind="' (' + errorReqPercent + ' ' + trans('all_requests') + ')'"></span>
+        </div>
+    </div>
+    <!-- /.row -->
+
     <script>
     $(document).ready(function() {
 

@@ -13,9 +13,9 @@ var translations = {
 
     /* Users */
     'users': 'Korisnici',
-    'user': 'Korisnik',
     'usersDetails': 'Detalji o korisniku',
     'usersRequests': 'Zahtjevi korisnika',
+    'user': 'Korisnik',
     'user_id': 'ID',
     'first_appear': 'Prvi pristup',
     'num_requests': 'Broj zahtjeva',
@@ -31,6 +31,7 @@ var translations = {
     'chart_activity_monthly': 'Broj zahtjeva po mjesecima',
 
     /* Requests */
+    'req_word_count': 'Broj riječi',
     'requests': 'Zahtjevi',
     'requestsDetails': 'Detalji zahtjeva',
     'request_id': 'ID',
@@ -40,14 +41,16 @@ var translations = {
 
     /* Errors */
     'errors': 'Pogreške',
+    'errorsGroup': 'Riječ/fraza',
     'errors_req': 'Pogreške zahtjeva',
-    'errorsGroup': 'Sumnjiva riječ',
-    'errorsDetails': 'Detalji pogreške',
     'error_id': 'ID',
     'suspicious_word': 'Pogrešna riječ/fraza',
     'error_type': 'Tip pogreške',
     'num_total_occur': 'Ukupan broj pojavljivanja pogreške',
+    'num_total_occur_req': 'Broj zahtjeva u kojima se pojavljuje',
+    'all_requests': 'svih zahtjeva',
     'num_occur': 'Broj pojavljivanja pogreške u zahtjevu',
+    'error_frequent': 'Najčešće pogreške',
 
     /* Error types */
     'xx': 'Ekstremna',
@@ -74,16 +77,7 @@ var translations = {
     'last': 'Zadnja',
     'next': 'Sljedeća',
     'previous': 'Prethodna',
-    'processing': '<div class="loader">Obrađujem</div>',
-
-    /* Page 2 & 3 navigation parent */
-    'pages23': 'More pages',
-
-    /* Page 2 */
-    'page2': 'Page 2',
-
-    /* Page 3 */
-    'page3': 'Page 3'
+    'processing': '<div class="loader">Obrađujem</div>'
   }
 }
 

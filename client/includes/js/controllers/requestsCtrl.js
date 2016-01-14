@@ -95,6 +95,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           $scope.reqTime = response.data.time;
           $scope.reqProcessing = response.data.processing_time;
           $scope.reqErrors = response.data.num_errors;
+          $scope.wordCount = response.data.word_count;
 
           $scope.complete();
         }, function errorCallback(response) {
@@ -155,7 +156,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
             'orderable': false,
             'targets': -1,
             'render': function(data, type, full, meta) {
-              return '<a href="' + config.baseUrl + '/errors/details/' + full.id + '" class="btn btn-primary">' + trans('details') + '</a>';
+              return '<a href="' + config.baseUrl + '/errors/group/' + full.suspicious + '" class="btn btn-primary">' + trans('details') + '</a>';
             }
           }]
         });

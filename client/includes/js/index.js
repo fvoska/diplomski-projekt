@@ -43,11 +43,6 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: config.baseUrl + '/views/errors.html',
       title: 'errors',
     })
-    .when('/errors/details/:id', {
-      navId: 'errors',
-      templateUrl: config.baseUrl + '/views/errorsDetails.html',
-      title: 'errorsDetails',
-    })
     .when('/errors/group/:group', {
       navId: 'errors',
       templateUrl: config.baseUrl + '/views/errorsGroup.html',

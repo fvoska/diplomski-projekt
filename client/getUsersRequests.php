@@ -3,22 +3,19 @@ header('Content-Type: application/json');
 
 $data = array();
 
-$data['recordsTotal'] = 2;
-$data['recordsFiltered'] = 2;
-$data['userID'] = $_GET['id'];
-/*
-"draw": 1,
-  "recordsTotal": 57,
-  "recordsFiltered": 57
-*/
+$data['recordsTotal'] = 2; // Broj zahtjeva korisnika s ID == $_GET['id']
+$data['recordsFiltered'] = 2; // Broj njegovih zahtjeva nakon filtriranja.
+$data['userID'] = $_GET['id']; // Vraćamo ID
+
+// Polje njegovih zahtjeva, svaki ima:
 $data['data'] = array();
 
 $request = array();
 
-$request['id'] = '3452';
-$request['time'] = '2015-12-26 07:59 GMT';
-$request['processing'] = '2.01s';
-$request['numErrors'] = '4';
+$request['id'] = '3452'; // ID zahtjeva
+$request['time'] = '2015-12-26 07:59 GMT'; // Vrijeme zahtjeva
+$request['processing'] = '2.01s'; // Vrijeme obrade
+$request['numErrors'] = '4'; // Broj grešaka
 array_push($data['data'], $request);
 
 $request['id'] = '3455';

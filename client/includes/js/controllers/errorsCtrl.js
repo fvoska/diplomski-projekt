@@ -22,6 +22,38 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
     switch (location[location.length - 1]) {
       // Errors list view.
       case 'errors':
+        $http({
+          method: 'GET',
+          url: 'getErrorsStats.php'
+        })
+        .then(function successCallback(response) {
+          $scope.errorTypes = response.data.error_types;
+          for (var i in $scope.errorTypes) {
+            if ($scope.errorTypes.hasOwnProperty(i)) {
+              $scope.errorTypes[i].label = trans($scope.errorTypes[i].label);
+            }
+          }
+          $scope.errorCount = response.data.error_count;
+          $scope.errorPercentage = $scope.errorCount.error_percentage;
+          $scope.avgWordCount = $scope.errorPercentage.avg_word_count;
+          $scope.avgErrorCount = $scope.errorPercentage.avg_error_count;
+
+          $scope.frequentErrors = response.data.most_frequent;
+
+          Morris.Donut({
+            element: 'morris-donut-chart-error-types-total',
+            resize: true,
+            data: $scope.errorTypes,
+            colors: ['#d9534f'],
+            formatter: function (y, data) { return y }
+          });
+          $scope.complete();
+        }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+          $scope.complete();
+        });
+
         // Header translations.
         $('#dataTables-errors thead th').each(function() {
           var title = $(this).text();
@@ -89,15 +121,25 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
         $scope.complete();
         break;
       // Details view by group.
-      case 'group':
-        break;
-      // Details view by id.
       default:
+        $http({
+          method: 'GET',
+          url: 'getErrorsGroup.php?group=' + $scope.group
+        })
+        .then(function successCallback(response) {
+          $scope.type = response.data.type;
+          $scope.numOccurReq = response.data.num_occur_req;
+          $scope.numOccur = response.data.num_occur;
+          $scope.errorReqPercent = (response.data.num_occur_req / response.data.req_count).toFixed(2) + '%';
+
+          $scope.complete();
+        }, function errorCallback(response) {
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+          $scope.complete();
+        });
+        break;
         break;
     }
   });
-
-  setTimeout(function() {
-    $scope.complete();
-  }, 250);
 });

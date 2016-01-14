@@ -160,6 +160,11 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
           $scope.numRequests = response.data.request_stats.num_requests;
           $scope.ipHistory = response.data.ip_history;
           $scope.errorTypes = response.data.error_stats;
+          for (var i in $scope.errorTypes) {
+            if ($scope.errorTypes.hasOwnProperty(i)) {
+              $scope.errorTypes[i].label = trans($scope.errorTypes[i].label);
+            }
+          }
           $scope.activityMonthly = response.data.usage_stats.monthly;
           $scope.requestStats = response.data.request_stats;
           $scope.errorPercentage = $scope.requestStats.error_percentage;
@@ -168,12 +173,15 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
 
           Morris.Donut({
             element: 'morris-donut-chart-error-types',
+            resize: true,
             data: $scope.errorTypes,
-            colors: ['#d9534f']
+            colors: ['#d9534f'],
+            formatter: function (y, data) { return y }
           });
 
           Morris.Area({
             element: 'morris-line-chart-activity-monthly',
+            resize: true,
             data: $scope.activityMonthly,
             xkey: 'month',
             ykeys: ['requests'],

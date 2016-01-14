@@ -78,7 +78,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <span ng-hide="errorTypes"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span class="middleSpinner" ng-hide="errorTypes"><i class="fa fa-spinner fa-spin"></i></span>
                     <div id="morris-donut-chart-error-types"></div>
                 </div>
                 <!-- /.panel-body -->
@@ -93,7 +93,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <span ng-hide="activityMonthly"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span class="middleSpinner" ng-hide="activityMonthly"><i class="fa fa-spinner fa-spin"></i></span>
                     <div id="morris-line-chart-activity-monthly"></div>
                 </div>
                 <!-- /.panel-body -->
@@ -111,7 +111,7 @@
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <span ng-hide="errorPercentage"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span class="middleSpinner" ng-hide="errorPercentage"><i class="fa fa-spinner fa-spin"></i></span>
                     <div ng-show="errorPercentage">
                         {{ trans('request_word_count_avg') }}: {{ avgWordCount }}<br>
                         {{ trans('request_error_count_avg') }}: {{ avgErrorCount }}<br>

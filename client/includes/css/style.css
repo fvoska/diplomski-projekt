@@ -1,6 +1,9 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+/*text[text-anchor="middle"]:first-of-type{
+    display: none;
+}*/
 .fader.ng-enter {
     transition: 0.25s linear all;
     opacity: 0;
@@ -128,6 +131,12 @@ table tfoot th {
     display: block;
     margin: auto;
 }
+.middleSpinner {
+    font-size: 4em;
+    display: block;
+    width: 1em;
+    margin: auto;
+}
 .fader2{
     -webkit-transition: linear 0.25s;
     -moz-transition: linear 0.25s;
@@ -146,4 +155,7 @@ table tfoot th {
 }
 .fader2.ng-leave-active{
     opacity: 0;
+}
+.frequentErrors li {
+    font-size: 1.5em;
 }
