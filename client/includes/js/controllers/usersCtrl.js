@@ -49,7 +49,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'getUsers.php',
+          'ajax': 'core/index.php?module=json&action=getUsers',
           'columns': [{
             'data': 'id'
           }, {
@@ -116,7 +116,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'getUsersRequests.php?id=' + $scope.userID,
+          'ajax': 'core/index.php?module=json&action=getUserRequests&id=' + $scope.userID,
           'columns': [{
             'data': 'id'
           }, {
@@ -153,7 +153,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
       default:
         $http({
           method: 'GET',
-          url: 'getUsersDetails.php?id=' + $scope.userID
+          url: 'core/index.php?module=json&action=getUserDetails&id=' + $scope.userID
         })
         .then(function successCallback(response) {
           $scope.firstAppear = response.data.first_appear;
@@ -171,13 +171,30 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
           $scope.avgWordCount = $scope.errorPercentage.avg_word_count;
           $scope.avgErrorCount = $scope.errorPercentage.avg_error_count;
 
-          Morris.Donut({
-            element: 'morris-donut-chart-error-types',
-            resize: true,
-            data: $scope.errorTypes,
-            colors: ['#d9534f'],
-            formatter: function (y, data) { return y }
-          });
+          if ($scope.errorTypes.length == 0) {
+            $('#morris-donut-chart-error-types').css('height', '400px')
+            Morris.Donut({
+              element: 'morris-donut-chart-error-types',
+              resize: true,
+              data: [
+                {
+                  'label': trans('no_user_errors'),
+                  'value': '1'
+                }
+              ],
+              colors: ['#5cb85c'],
+              formatter: function (y, data) { return '' }
+            });
+          }
+          else {
+            Morris.Donut({
+              element: 'morris-donut-chart-error-types',
+              resize: true,
+              data: $scope.errorTypes,
+              colors: ['#d9534f'],
+              formatter: function (y, data) { return y }
+            });
+          }
 
           Morris.Area({
             element: 'morris-line-chart-activity-monthly',

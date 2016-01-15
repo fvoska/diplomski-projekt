@@ -1,13 +1,15 @@
 var translations = {
   hr: {
     /* Common */
-    'application_title': 'Diplomski Projekt',
+    //'application_title': 'Diplomski Projekt',
+    'application_title': 'Ispravi.me Statistika',
     'toggle_nav': 'Navigacija',
     'back': 'Vrati se',
 
     /* Homepage */
     'home': 'Naslovna',
     'errors_found': 'Pronađenih pogrešaka',
+    'errors_found_distinct': 'Jedinstvenih pogrešaka',
     'requests_processed': 'Obrađenih zahtjeva',
     'users_count': 'Korisnika',
 
@@ -29,6 +31,7 @@ var translations = {
     'request_error_count_avg': 'Prosječan broj pogrešaka po zahtjevu',
     'request_error_percent': 'Postotak pogrešaka',
     'chart_activity_monthly': 'Broj zahtjeva po mjesecima',
+    'no_user_errors': 'Nema grešaka',
 
     /* Requests */
     'req_word_count': 'Broj riječi',

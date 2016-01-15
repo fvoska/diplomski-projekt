@@ -49,10 +49,8 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'getRequests.php',
+          'ajax': 'core/index.php?module=json&action=getRequests',
           'columns': [{
-            'data': 'id'
-          }, {
             'data': 'time'
           }, {
             'data': 'processing'
@@ -87,7 +85,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
         // Details.
         $http({
           method: 'GET',
-          url: 'getRequestsDetails.php?id=' + $scope.requestID
+          url: 'core/index.php?module=json&action=getRequestDetails&id=' + $scope.requestID
         })
         .then(function successCallback(response) {
           $scope.requestID = response.data.id;
@@ -137,10 +135,8 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'getRequestsErrors.php?id=' + $scope.requestID,
+          'ajax': 'core/index.php?module=json&action=getRequestErrors&id=' + $scope.requestID,
           'columns': [{
-            'data': 'id'
-          }, {
             'data': 'suspicious'
           }, {
             'data': 'type',

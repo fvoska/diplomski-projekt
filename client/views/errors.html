@@ -25,10 +25,10 @@
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <span class="middleSpinner" ng-hide="errorPercentage"><i class="fa fa-spinner fa-spin"></i></span>
-                    <div ng-show="errorPercentage">
-                        {{ trans('request_word_count_avg') }}: {{ avgWordCount }}<br>
-                        {{ trans('request_error_count_avg') }}: {{ avgErrorCount }}<br>
-                        {{ trans('request_error_percent') }}: {{ (avgErrorCount * 100 / avgWordCount).toFixed(2) }}%<br>
+                    <div ng-show="errorPercentage" class="aBitLarger">
+                        {{ trans('request_word_count_avg') }}: <span class="statHighlight">{{ avgWordCount }}</span><br>
+                        {{ trans('request_error_count_avg') }}: <span class="statHighlight">{{ avgErrorCount }}</span><br>
+                        {{ trans('request_error_percent') }}: <span class="statHighlight">{{ (avgErrorCount * 100 / avgWordCount).toFixed(2) }}%</span><br>
                     </div>
                 </div>
                 <!-- /.panel-body -->

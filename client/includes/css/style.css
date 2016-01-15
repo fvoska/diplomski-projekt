@@ -45,6 +45,9 @@ td {
 input.footer-search {
     width: 100%!important;
 }
+.dataTable {
+    width: 100%!important;
+}
 table tfoot th {
     border-top-width: 3px;
     border-left: none;
@@ -158,4 +161,19 @@ table tfoot th {
 }
 .frequentErrors li {
     font-size: 1.5em;
+    font-weight: bold;
+}
+.frequentErrors li a {
+    color: #d9534f!important;
+}
+.aBitLarger {
+    font-size: 1.25em;
+}
+.statHighlight {
+    color: #337ab7;
+    font-weight: bold;
+}
+.errorHighlight {
+    color: #d9534f;
+    font-weight: bold;
 }

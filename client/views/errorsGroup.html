@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 style="margin-top: 0;" class="page-header">{{ trans('errorsGroup') }} "{{ group }}"</h1>
+            <h1 style="margin-top: 0;" class="page-header">{{ trans('errorsGroup') }}</h1>
         </div>
     </div>
     <!-- /.row -->
@@ -18,7 +18,7 @@
         </div>
         <div class="col-sm-9">
             <span ng-hide="group"><i class="fa fa-spinner fa-spin"></i></span>
-            <span ng-if="group" class="fader2" ng-bind="group"></span>
+            <span ng-if="group" class="fader2 errorHighlight" ng-bind="group"></span>
         </div>
     </div>
     <!-- /.row -->
