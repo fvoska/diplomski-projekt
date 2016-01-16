@@ -40,23 +40,74 @@ class Json extends Config
         $countAll = $countAll->fetch();
         $result["recordsTotal"] = (int)$countAll['recordsTotal'];
 
-        // where part
-        $where = "WHERE 1=1";
+        $columnArray=array("u.userID","u.timeAppeared","num_requests","u.lastIP");
 
         // order part
-        $order = "ORDER BY userID ASC";
+        $order=$_GET['order']; $order=$order[0];
+        switch($order['column']){
+            default:
+            case 0:
+                $orderColumn=$columnArray[0];
+                break;
+
+            case 1:
+                $orderColumn=$columnArray[1];
+                break;
+
+            case 2:
+                $orderColumn=$columnArray[2];
+                break;
+
+            case 3:
+                $orderColumn=$columnArray[3];
+                break;
+
+        }
+        $order['dir']?$orderDir=$order['dir']:$orderDir="ASC";
+        $orderSQL = "ORDER BY $orderColumn $orderDir";
+
+        // where part
+        $where = "WHERE 1=1";
+        $columns=$_GET['columns'];
+        $i=0;
+        foreach($columns as $item){
+            if($value=$item['search']['value']){
+                if($i==2)
+                    $havingSQL=" HAVING COUNT(r.reqID)=:p$i";
+                else
+                    $where.=" AND ".$columnArray[$i]." LIKE :p$i";
+            }
+            $i++;
+        }
 
         // filtered records
         $start = $_GET['start'];
         $length = $_GET['length'];
         (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = "";
-        $countFiltered = $this->dbh->prepare("SELECT COUNT(userID) as recordsFiltered FROM user $where $order $addPagination ");
+        $countFiltered = $this->dbh->prepare("SELECT COUNT(userID) as recordsFiltered FROM user $where $orderSQL $addPagination ");
+        $i=0;
+        foreach($columns as $item){
+            if($value=$item['search']['value']){
+                if($i==2) $value=$value; else $value='%'.$value.'%';
+                $countFiltered->bindValue("p$i",$value);
+            }
+            $i++;
+        }
         $countFiltered->execute();
         $countFiltered = $countFiltered->fetch();
         $result["recordsFiltered"] = (int)$countFiltered['recordsFiltered'];
 
         // add data
-        $data = $this->dbh->prepare("SELECT u.userID AS id, UNIX_TIMESTAMP(u.timeAppeared) AS first_appear, u.lastIP AS last_ip, COUNT(r.reqID) as num_requests FROM user u  JOIN request r ON r.userID=u.userID GROUP BY u.userID");
+        $data = $this->dbh->prepare("SELECT u.userID AS id, UNIX_TIMESTAMP(u.timeAppeared) AS first_appear, u.lastIP AS last_ip, COUNT(r.reqID) as num_requests FROM user u  JOIN request r ON r.userID=u.userID $where GROUP BY u.userID $havingSQL $orderSQL $addPagination");
+        $i=0;
+        foreach($columns as $item){
+            if($value=$item['search']['value']){
+                if($i==2) $value=$value; else $value='%'.$value.'%';
+                $data->bindValue("p$i",$value);
+            }
+            $i++;
+        }
+
         $data->execute();
         $data = $data->fetchAll();
         $result["data"]=array();
@@ -179,6 +230,7 @@ class Json extends Config
                 $monthlyStats->bindParam("userID", $id);
                 $monthlyStats->execute();
                 $monthlyStats = $monthlyStats->fetchAll();
+                $result['usage_stats']['monthly'] = array();
                 foreach ($monthlyStats as $item) {
                     $result['usage_stats']['monthly'][] = array("month" => $item['month'], "requests" => (int)$item['requests']);
                 }
