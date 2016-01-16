@@ -118,8 +118,6 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
           'serverSide': true,
           'ajax': 'core/index.php?module=json&action=getUserRequests&id=' + $scope.userID,
           'columns': [{
-            'data': 'id'
-          }, {
             'data': 'time'
           }, {
             'data': 'processing'
