@@ -56,15 +56,15 @@ var translations = {
     'error_frequent': 'Najčešće pogreške',
 
     /* Error types */
-    'xx': 'Ekstremna',
-    'll': 'Značajna',
-    'mm': 'Umjerena',
-    'ss': 'Manja',
-    'cc': 'Neklasificirana',
-    'gg': 'Malo/veliko slovo',
-    'kk': 'Umiješani brojevi',
-    'GG': 'Gramatička',
-    'PP': 'Pleonazam',
+    'xx': 'Ekstremna (xx)',
+    'll': 'Značajna (ll)',
+    'mm': 'Umjerena (mm)',
+    'ss': 'Manja (ss)',
+    'cc': 'Neklasificirana (cc)',
+    'gg': 'Malo/veliko slovo (gg)',
+    'kk': 'Umiješani brojevi (kk)',
+    'GG': 'Gramatička (GG)',
+    'PP': 'Pleonazam (PP)',
 
     /* Tables */
     'lengthMenu': 'Prikaži _MENU_ zapisa po stranici',

@@ -98,6 +98,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
         });
         // Create DataTable.
         var table = $('#dataTables-users-requests').DataTable({
+          'order': [[ 2, 'desc' ]],
           'responsive': true,
           'language': {
             'lengthMenu': trans('lengthMenu'),
