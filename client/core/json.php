@@ -204,6 +204,7 @@ class Json extends Config
                                         WHERE r.userID=:userID
                                         $where
                                         GROUP BY r.reqID
+                                        $havingSQL
                                         $orderSQL
                                         $addPagination
                                         ");
@@ -229,7 +230,7 @@ class Json extends Config
                 $result['data'][] = array(
                     'id' => $item['id'],
                     'time' => $item['time'],
-                    'processing' => $item['processing'].'s',
+                    'processing' => $item['processing'],
                     'numErrors' => (int) $item['numErrors'],
                 );
             }
@@ -277,12 +278,12 @@ class Json extends Config
                 }
 
                 // add monthly stats (last 12 months)
+                /* AND timeRequested >= NOW() - INTERVAL 12 MONTH */
                 $monthlyStats = $this->dbh->prepare("SELECT CONCAT(YEAR(timeRequested),'-',MONTH(timeRequested)) AS month, COUNT(reqID) as requests
                                                     FROM request
                                                     WHERE userID=:userID
-                                                    AND timeRequested >= NOW() - INTERVAL 12 MONTH
                                                     GROUP BY YEAR(timeRequested), MONTH(timeRequested)
-                                                    ORDER BY timeRequested DESC");
+                                                    ORDER BY timeRequested DESC LIMIT 0,12");
                 $monthlyStats->bindParam('userID', $id);
                 $monthlyStats->execute();
                 $monthlyStats = $monthlyStats->fetchAll();
@@ -420,7 +421,7 @@ class Json extends Config
             $result['data'][] = array(
                 'id' => $item['id'],
                 'time' => $item['time'].'',
-                'processing' => $item['processing'].'s',
+                'processing' => $item['processing'],
                 'numErrors' => $item['numErrors'],
             );
         }
@@ -581,22 +582,57 @@ class Json extends Config
         $countAll = $countAll->fetch();
         $result['recordsTotal'] = (int) $countAll['recordsTotal'];
 
+        $columnArray=array("e.errorPhrase","e.errorTypeID","SUM(e.numOccur)");
+
         // where part
-        $where = '1=1';
+        $where = 'WHERE 1=1';
+        $columns = $_GET['columns'];
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $havingSQL = " HAVING SUM(e.numOccur)=:p$i";
+                    } else {
+                        $where .= ' AND CAST('.$columnArray[$i]." AS CHAR) LIKE :p$i";
+                    }
+                }
+                ++$i;
+            }
+        }
 
         // order part
-        $order = 'ORDER BY errorID ASC';
+        $order = $_GET['order'];
+        $order = $order[0];
+        $orderColumn = $columnArray[$order['column']];
+        $order['dir'] ? $orderDir = $order['dir'] : $orderDir = 'ASC';
+        $orderSQL = "ORDER BY $orderColumn $orderDir";
 
         // filtered records
         $start = $_GET['start'];
         $length = $_GET['length'];
         (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
-        $countFiltered = $this->dbh->prepare("SELECT COUNT(DISTINCT errorPhrase) AS recordsFiltered
-                                              FROM error WHERE $where");
+        $countFiltered = $this->dbh->prepare("SELECT e.errorPhrase AS suspicious
+                                    FROM error e
+                                    $where
+                                    GROUP BY e.errorPhrase, e.errorTypeID
+                                    $havingSQL");
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $value = $value;
+                    } else {
+                        $value = '%'.$value.'%';
+                    }
+                    $countFiltered->bindValue("p$i", $value);
+                }
+                ++$i;
+            }
+        }
         $countFiltered->execute();
-        $countFiltered = $countFiltered->fetch();
-        $result['recordsFiltered'] = (int) $countFiltered['recordsFiltered'];
-
+        $result['recordsFiltered'] = $countFiltered->rowCount();
         // pagination
         $start = $_GET['start'];
         $length = $_GET['length'];
@@ -605,9 +641,26 @@ class Json extends Config
         // add error data
         $data = $this->dbh->prepare("SELECT e.errorPhrase AS suspicious, e.errorTypeID AS type, SUM(e.numOccur) AS totalNumOccur
                                     FROM error e
+                                    $where
                                     GROUP BY e.errorPhrase, e.errorTypeID
+                                    $havingSQL
+                                    $orderSQL
                                     $addPagination
                                     ");
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $value = $value;
+                    } else {
+                        $value = '%'.$value.'%';
+                    }
+                    $data->bindValue("p$i", $value);
+                }
+                ++$i;
+            }
+        }
         $data->execute();
         $data = $data->fetchAll();
         $result['data'] = array();

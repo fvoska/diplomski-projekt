@@ -70,7 +70,7 @@ var translations = {
     'lengthMenu': 'Prikaži _MENU_ zapisa po stranici',
     'search': 'Traži:  ',
     'zeroRecords': 'Nema rezultata',
-    'info': 'Stranica _PAGE_ od _PAGES_',
+    'info': 'Zapisi _START_-_END_ (_TOTAL_ ukupno). Stranica _PAGE_ od _PAGES_.',
     'infoEmpty': 'Nema zapisa',
     'infoFiltered': '(filtrirano iz ukupno _MAX_ zapisa)',
     'actions': 'Akcije',

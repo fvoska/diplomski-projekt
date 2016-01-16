@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="diplomski-projekt">
-<?php //$base_url = "/grupa84/app/"; ?>
-<?php $base_url = "/diplomski/client/"; ?>
+<?php $base_url = "/grupa84/app/"; ?>
+<?php //$base_url = "/diplomski/client/"; ?>
 <head>
     <base href="<?php echo $base_url; ?>">
 
@@ -31,6 +31,7 @@
 
     <!-- DataTables CSS -->
     <link href="<?php echo $base_url; ?>includes/css/dataTables.bootstrap.css" rel="stylesheet">
+    <!--<link href="<?php echo $base_url; ?>includes/css/fixedHeader.dataTables.min.css" rel="stylesheet">-->
 
     <!-- Morris Charts CSS -->
     <link href="<?php echo $base_url; ?>includes/css/morris.css" rel="stylesheet">
@@ -66,6 +67,8 @@
     <!-- DataTables JavaScript -->
     <script src="<?php echo $base_url; ?>includes/js/libs/jquery.dataTables.min.js"></script>
     <script src="<?php echo $base_url; ?>includes/js/libs/dataTables.bootstrap.min.js"></script>
+    <!--<script src="<?php echo $base_url; ?>includes/js/libs/dataTables.input.js"></script>-->
+    <!--<script src="<?php echo $base_url; ?>includes/js/libs/dataTables.fixedHeader.min.js"></script>-->
 
     <!-- Morris Charts JavaScript -->
     <script src="<?php echo $base_url; ?>includes/js/libs/raphael.min.js"></script>

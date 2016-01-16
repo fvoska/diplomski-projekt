@@ -71,7 +71,6 @@ class Controller extends Config{
 
     }
 
-
     public function insertHascheckRequest($argv){
         // convert string to json object
         $json=json_decode($argv[1]);
@@ -83,8 +82,9 @@ class Controller extends Config{
         $userExists->bindParam("userID",$json->userID);
         $userExists->execute();
         if($userExists->fetch()){ // if user exists - update last ip
-            $upd=$this->dbh->prepare("UPDATE user SET lastIP=:lastIP");
+            $upd=$this->dbh->prepare("UPDATE user SET lastIP=:lastIP WHERE userID=:userID");
             $upd->bindParam("lastIP", $json->ip);
+            $upd->bindParam("userID", $json->userID);
             $upd->execute();
         }else{ // otherwise, insert new user
             $ins=$this->dbh->prepare("INSERT INTO user (userID, timeAppeared, lastIP) VALUES (:userID, :timeAppeared, :lastIP)");

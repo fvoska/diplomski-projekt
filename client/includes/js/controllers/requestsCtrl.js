@@ -31,6 +31,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
         });
         // Create DataTable.
         var table = $('#dataTables-requests').DataTable({
+          'order': [[ 0, 'desc' ]],
           'responsive': true,
           'language': {
             'lengthMenu': trans('lengthMenu'),
