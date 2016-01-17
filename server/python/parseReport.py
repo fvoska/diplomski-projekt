@@ -6,6 +6,7 @@ from dateutil.parser import parse
 import string
 import json
 import subprocess
+import random
 
 def popravi(redak):
     #zamijene se cudni znakovi hrvatskim slovima
@@ -74,7 +75,7 @@ for i in range(1, n):
     podaci_za_bazu['context'] = "on"
     podaci_za_bazu['wordCounter'] = int(errors_count[len(errors_count) - 1])
     podaci_za_bazu['report'] = izvjestaj
-    podaci_za_bazu['timeProcessed'] = 4.20
+    podaci_za_bazu['timeProcessed'] = random.uniform(2, 6)
     json_podaci = json.dumps(podaci_za_bazu)
     print '\nUbacujem u bazu: '
     print json_podaci

@@ -1,63 +1,80 @@
-CREATE SCHEMA `ispraviMe`;
-
 CREATE TABLE `ispraviMe`.`user` (
-  `userID` VARCHAR(75) NOT NULL,
-  `timeAppeared` DATETIME NOT NULL,
-  `lastIP` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`userID`));
+    `userID` varchar(75) NOT NULL,
+    `timeAppeared` datetime NOT NULL,
+    `lastIP` varchar(45) NOT NULL,
+    PRIMARY KEY (`userID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ispraviMe`.`user_ip` (
-  `userID` VARCHAR(75) NOT NULL,
-  `IP` VARCHAR(45) NOT NULL,
-  `time` DATETIME NOT NULL,
-  PRIMARY KEY (`userID`, `IP`),
-  CONSTRAINT `uIP`
-    FOREIGN KEY (`userID`)
-    REFERENCES `ispraviMe`.`user` (`userID`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
+    `userID` varchar(75) NOT NULL,
+    `IP` varchar(45) NOT NULL,
+    `time` datetime NOT NULL,
+    PRIMARY KEY (`userID`,`IP`),
+    CONSTRAINT `userIP`
+        FOREIGN KEY (`userID`)
+        REFERENCES `ispraviMe`.`user` (`userID`)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ispraviMe`.`request` (
-  `reqID` INT NOT NULL AUTO_INCREMENT,
-  `requestText` TEXT NULL,
-  `reqTextLength` INT NULL,
-  `userID` VARCHAR(75) NOT NULL,
-  `timeRequested` DATETIME NULL,
-  `timeProcessed` DATETIME NULL,
-  PRIMARY KEY (`reqID`),
-    FOREIGN KEY (`userID`)
-    REFERENCES `ispraviMe`.`user` (`userID`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
+    `reqID` int NOT NULL AUTO_INCREMENT,
+    `requestText` text,
+    `reqTextLength` int DEFAULT NULL,
+    `userID` varchar(75) NOT NULL,
+    `timeRequested` datetime DEFAULT NULL,
+    `timeProcessed` float DEFAULT NULL,
+    PRIMARY KEY (`reqID`),
+    CONSTRAINT `reqUserID`
+        FOREIGN KEY (`userID`)
+        REFERENCES `ispraviMe`.`user` (`userID`)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `ispraviMe`.`error_type` (
-  `errorTypeID` VARCHAR(10) NOT NULL,
-  `errorTypeDesc` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`errorTypeID`));
+    `errorTypeID` varchar(10) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT '',
+    `errorTypeDesc` varchar(45) NOT NULL,
+    PRIMARY KEY (`errorTypeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `ispraviMe`.`error_type` VALUES
+    ('GG','grammar'),
+    ('PP','pleonasm'),
+    ('cc','unclasifiable'),
+    ('gg','case-mix'),
+    ('kk','alphanum-mix'),
+    ('ll','major'),
+    ('mm','moderate'),
+    ('ss','minor'),
+    ('xx','extreme');
 
 CREATE TABLE `ispraviMe`.`error` (
-  `errorID` INT NOT NULL AUTO_INCREMENT,
-  `errorTypeID` VARCHAR(10) NULL,
-  `errorPhrase` VARCHAR(30) NULL,
-  `numOccur` INT NULL,
-  `correctedTo` VARCHAR(30) NULL,
-  PRIMARY KEY (`errorID`),
-    FOREIGN KEY (`errorTypeID`)
-    REFERENCES `ispraviMe`.`error_type` (`errorTypeID`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION);
+    `errorID` int NOT NULL AUTO_INCREMENT,
+    `errorTypeID` varchar(10) CHARACTER SET latin1 COLLATE latin1_bin NOT NULL DEFAULT '',
+    `errorPhrase` varchar(30) DEFAULT NULL,
+    `numOccur` int DEFAULT NULL,
+    `correctedTo` varchar(30) DEFAULT NULL,
+    PRIMARY KEY (`errorID`),
+    CONSTRAINT `errorErrorType`
+        FOREIGN KEY (`errorTypeID`)
+        REFERENCES `ispraviMe`.`error_type` (`errorTypeID`)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=337 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `ispraviMe`.`request_error` (
-  `errorID` INT NOT NULL,
-  `reqID` INT NULL,
-  PRIMARY KEY (`errorID`),
-  CONSTRAINT `reqKey`
-    FOREIGN KEY (`reqID`)
-    REFERENCES `ispraviMe`.`request` (`reqID`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `errorKey`
-    FOREIGN KEY (`errorID`)
-    REFERENCES `ispraviMe`.`error` (`errorID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+CREATE TABLE `request_error` (
+    `errorID` int NOT NULL,
+    `reqID` int DEFAULT NULL,
+    PRIMARY KEY (`errorID`, `reqID`),
+    CONSTRAINT `reqErrorReq`
+        FOREIGN KEY (`reqID`)
+        REFERENCES `ispraviMe`.`request` (`reqID`)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION,
+    CONSTRAINT `reqErrorError`
+        FOREIGN KEY (`errorID`)
+        REFERENCES `ispraviMe`.`error` (`errorID`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
