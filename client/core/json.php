@@ -28,6 +28,11 @@ class Json extends Config
         $countErrors = $countErrors->fetch();
         $result['count']['errors_distinct'] = (int) $countErrors['errors_distinct'];
 
+        $avgTime = $this->dbh->prepare('SELECT ROUND(AVG(timeProcessed),2) AS avg_processing_time FROM request');
+        $avgTime->execute();
+        $avgTime = $avgTime->fetch();
+        $result['count']['avg_processing_time'] = (float) $avgTime['avg_processing_time'];
+
         echo json_encode($result);
     }
 
@@ -800,7 +805,7 @@ class Json extends Config
         // count without pagination
         $addPagination = '';
         // add data
-        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
                                       FROM request r
                                       LEFT JOIN request_error re ON r.reqID=re.reqID
                                       JOIN error e ON re.errorID=e.errorID AND e.errorPhrase=:errorPhrase

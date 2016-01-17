@@ -20,6 +20,7 @@ angular.module('diplomski-projekt').controller('homeCtrl', function($scope, $htt
       $scope.numRequests = response.data.count.requests;
       $scope.numErrors = response.data.count.errors;
       $scope.numErrorsDistinct = response.data.count.errors_distinct;
+      $scope.avgProcessingTime = response.data.count.avg_processing_time;
       $scope.complete();
     }, function errorCallback(response) {
       // called asynchronously if an error occurs

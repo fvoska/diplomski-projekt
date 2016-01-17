@@ -12,6 +12,7 @@ var translations = {
     'errors_found_distinct': 'Jedinstvenih pogrešaka',
     'requests_processed': 'Obrađenih zahtjeva',
     'users_count': 'Korisnika',
+    'avg_processing_time': 'Prosječno vrijeme obrade',
 
     /* Users */
     'users': 'Korisnici',
