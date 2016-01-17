@@ -67,6 +67,10 @@ class Controller extends Config{
                 $json->getErrorGroup();
                 break;
 
+            case "getErrorsRequests";
+                $json->getErrorsRequests();
+                break;
+
         }
 
     }

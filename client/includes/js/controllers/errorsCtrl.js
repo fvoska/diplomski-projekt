@@ -118,6 +118,7 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
             }
           });
         });
+
         $scope.complete();
         break;
       // Details view by group.
@@ -131,6 +132,69 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
           $scope.numOccurReq = response.data.num_occur_req;
           $scope.numOccur = response.data.num_occur;
           $scope.errorReqPercent = (response.data.num_occur_req * 100 / response.data.req_count).toFixed(2) + '%';
+
+          // Header translations.
+          $('#dataTables-errors-requests thead th').each(function() {
+            var title = $(this).text();
+            $(this).html(trans(title));
+          });
+          // Footer translations.
+          $('#dataTables-errors-requests tfoot th').each(function() {
+            var title = $(this).text();
+            if (title != 'actions') {
+              $(this).html('<input type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" />');
+            }
+          });
+          // Create DataTable.
+          var table = $('#dataTables-errors-requests').DataTable({
+            'order': [[ 0, 'desc' ]],
+            'responsive': true,
+            'language': {
+              'lengthMenu': trans('lengthMenu'),
+              'search': trans('search'),
+              'zeroRecords': trans('zeroRecords'),
+              'info': trans('info'),
+              'infoEmpty': trans('infoEmpty'),
+              'infoFiltered': trans('infoFiltered'),
+              'processing': trans('processing'),
+              'paginate': {
+                'first': trans('first'),
+                'last': trans('last'),
+                'next': trans('next'),
+                'previous': trans('previous')
+              }
+            },
+            'processing': true,
+            'serverSide': true,
+            'ajax': 'core/index.php?module=json&action=getErrorsRequests&group=' + $scope.group,
+            'columns': [{
+              'data': 'time'
+            }, {
+              'data': 'processing'
+            }, {
+              'data': 'numErrors'
+            }, {
+              'data': 'button'
+            }],
+            'columnDefs': [{
+              'orderable': false,
+              'targets': -1,
+              'render': function(data, type, full, meta) {
+                return '<a href="' + config.baseUrl + '/requests/' + full.id + '" class="btn btn-primary">' + trans('details') + '</a>';
+              }
+            }]
+          });
+          // Set search handler.
+          table.columns().every(function() {
+            var that = this;
+            $('input', this.footer()).on('keydown', function(ev) {
+              if (ev.keyCode == 13) {
+                that
+                  .search(this.value)
+                  .draw();
+              }
+            });
+          });
 
           $scope.complete();
         }, function errorCallback(response) {

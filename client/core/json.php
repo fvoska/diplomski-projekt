@@ -758,4 +758,118 @@ class Json extends Config
             echo json_encode($result);
         }
     }
+
+    public function getErrorsRequests()
+    {
+        $group = $_GET['group'];
+
+        $result = array();
+
+        // total records
+        $countAll = $this->dbh->prepare('SELECT COUNT(reqID) as recordsTotal FROM request');
+        $countAll->execute();
+        $countAll = $countAll->fetch();
+        $result['recordsTotal'] = (int) $countAll['recordsTotal'];
+
+        $columnArray = array('r.timeRequested', 'ROUND(r.timeProcessed,2)', 'numErrors');
+
+        // order part
+        $order = $_GET['order'];
+        $order = $order[0];
+        $orderColumn = $columnArray[$order['column']];
+        $order['dir'] ? $orderDir = $order['dir'] : $orderDir = 'ASC';
+        $orderSQL = "ORDER BY $orderColumn $orderDir";
+
+        // where part
+        $where = 'WHERE 1=1';
+        $columns = $_GET['columns'];
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $havingSQL = " HAVING COUNT(re.errorID)=:p$i";
+                    } else {
+                        $where .= ' AND CAST('.$columnArray[$i]." AS CHAR) LIKE :p$i";
+                    }
+                }
+                ++$i;
+            }
+        }
+
+        // count without pagination
+        $addPagination = '';
+        // add data
+        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+                                      FROM request r
+                                      LEFT JOIN request_error re ON r.reqID=re.reqID
+                                      JOIN error e ON re.errorID=e.errorID AND e.errorPhrase=:errorPhrase
+                                      $where
+                                      GROUP BY r.reqID
+                                      $havingSQL
+                                      $addPagination
+                                    ");
+        $data->bindParam('errorPhrase', $group);
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $value = $value;
+                    } else {
+                        $value = '%'.$value.'%';
+                    }
+                    $data->bindValue("p$i", $value);
+                }
+                ++$i;
+            }
+        }
+        $data->execute();
+        $result['recordsFiltered'] = $data->rowCount();
+
+        // filtered records
+        $start = $_GET['start'];
+        $length = $_GET['length'];
+        (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
+
+        // add data
+        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+                                      FROM request r
+                                      LEFT JOIN request_error re ON r.reqID=re.reqID
+                                      JOIN error e ON re.errorID=e.errorID AND e.errorPhrase=:errorPhrase
+                                      $where
+                                      GROUP BY r.reqID
+                                      $havingSQL
+                                      $orderSQL
+                                      $addPagination
+                                    ");
+        $data->bindParam('errorPhrase', $group);
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $value = $value;
+                    } else {
+                        $value = '%'.$value.'%';
+                    }
+                    $data->bindValue("p$i", $value);
+                }
+                ++$i;
+            }
+        }
+        $data->execute();
+        $data = $data->fetchAll();
+        $result['data'] = array();
+        foreach ($data as $item) {
+            $result['data'][] = array(
+                'id' => $item['id'],
+                'time' => $item['time'].'',
+                'processing' => $item['processing'],
+                'numErrors' => $item['numErrors'],
+            );
+        }
+
+        echo json_encode($result);
+    }
 }

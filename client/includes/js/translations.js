@@ -54,6 +54,7 @@ var translations = {
     'all_requests': 'svih zahtjeva',
     'num_occur': 'Broj pojavljivanja pogreške u zahtjevu',
     'error_frequent': 'Najčešće pogreške',
+    'error_group_requests': 'Zahtjevi koji sadrže riječ/frazu',
 
     /* Error types */
     'xx': 'Ekstremna (xx)',
@@ -85,6 +86,9 @@ var translations = {
 }
 
 function trans(code) {
+  if (code == undefined) {
+    return '';
+  }
   var t = translations[config.language][code];
   if (t) {
     return t;
