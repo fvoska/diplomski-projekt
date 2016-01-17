@@ -1,1 +1,0 @@
-Tu æemo stavljati PHP skripte koje vuku iz MySQL baze.
