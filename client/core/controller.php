@@ -79,7 +79,7 @@ class Controller extends Config{
         // convert string to json object
         $json=json_decode($argv[1]);
 
-        $datetime=date ("Y-m-d H:i:s", mktime());
+        //$datetime=date ("Y-m-d H:i:s", mktime());
 
         //check if user exists
         $userExists=$this->dbh->prepare("SELECT userID FROM user WHERE userID=:userID");
@@ -93,7 +93,8 @@ class Controller extends Config{
         }else{ // otherwise, insert new user
             $ins=$this->dbh->prepare("INSERT INTO user (userID, timeAppeared, lastIP) VALUES (:userID, :timeAppeared, :lastIP)");
             $ins->bindParam("userID", $json->userID);
-            $ins->bindParam("timeAppeared", $datetime);
+            //$ins->bindParam("timeAppeared", $datetime);
+            $ins->bindParam("timeAppeared", $json->requestTime);
             $ins->bindParam("lastIP", $json->ip);
             $ins->execute();
         }
