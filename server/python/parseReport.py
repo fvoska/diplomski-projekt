@@ -57,6 +57,7 @@ def main(argv):
         n = len(stats)
 
     for i in range(1, n):
+        print 'Processing request ' + str(i) + '/' + str(n)
         lines = stats[i].split("\n")
         ip = lines[0].split()[0]
         user_id = lines[1].split("UserID: ")[1]
