@@ -41,6 +41,7 @@ td {
     border: 1px solid #ddd;
     padding: 0 0.5em;
     margin-right: 0.5em;
+    margin-bottom: 0.5em;
 }
 input.footer-search {
     width: 100%!important;
@@ -176,4 +177,31 @@ table tfoot th {
 .errorHighlight {
     color: #d9534f;
     font-weight: bold;
+}
+.IPSearchContainer {
+    text-align: right;
+    margin-bottom: 8px;
+}
+.IPSCs input {
+    width: 80%!important;
+    margin-left: 8px;
+}
+.IPSearchLabel {
+    color: #999;
+    font-size: 0.75em;
+}
+.SearchChk {
+    color: #999;
+    font-size: 0.75em;
+}
+.SearchChk input {
+    margin-right: 8px;
+}
+.SearchChk label {
+    font-weight: bold;
+}
+table#dataTables-users > tbody > tr > td:first-child {
+    font-family: monospace;
+    white-space: pre;
+    font-size: 0.75em;
 }

@@ -33,6 +33,9 @@ var translations = {
     'request_error_percent': 'Postotak pogrešaka',
     'chart_activity_monthly': 'Broj zahtjeva po mjesecima',
     'no_user_errors': 'Nema grešaka',
+    'ip_min': 'IP od',
+    'ip_max': 'IP do',
+    'only_latest': 'Provjeravaj samo zadnje IP adrese<br>(ne cijelu povijest IP adresa korisnika)',
 
     /* Requests */
     'req_word_count': 'Broj riječi',

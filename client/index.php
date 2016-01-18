@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="diplomski-projekt">
-<?php $base_url = "/grupa84/app/"; ?>
-<?php //$base_url = "/diplomski/client/"; ?>
+<?php //$base_url = "/grupa84/app/"; ?>
+<?php $base_url = "/diplomski/client/"; ?>
 <head>
     <base href="<?php echo $base_url; ?>">
 

@@ -24,7 +24,7 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
       case 'errors':
         $http({
           method: 'GET',
-          url: 'core/index.php?module=json&action=getErrorStats'
+          url: config.phpUrl + 'index.php?module=json&action=getErrorStats'
         })
         .then(function successCallback(response) {
           $scope.errorTypes = response.data.error_types;
@@ -86,7 +86,7 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'core/index.php?module=json&action=getErrors',
+          'ajax': config.phpUrl + 'index.php?module=json&action=getErrors',
           'columns': [{
             'data': 'suspicious'
           }, {
@@ -125,7 +125,7 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
       default:
         $http({
           method: 'GET',
-          url: 'core/index.php?module=json&action=getErrorGroup&group=' + $scope.group
+          url: config.phpUrl + 'index.php?module=json&action=getErrorGroup&group=' + $scope.group
         })
         .then(function successCallback(response) {
           $scope.type = response.data.type;
@@ -166,7 +166,7 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
             },
             'processing': true,
             'serverSide': true,
-            'ajax': 'core/index.php?module=json&action=getErrorsRequests&group=' + $scope.group,
+            'ajax': config.phpUrl + 'index.php?module=json&action=getErrorsRequests&group=' + $scope.group,
             'columns': [{
               'data': 'time'
             }, {

@@ -12,7 +12,7 @@ angular.module('diplomski-projekt').controller('homeCtrl', function($scope, $htt
   $(document).ready(function() {
     $http({
       method: 'GET',
-      url: 'core/index.php?module=json&action=getSummary'
+      url: config.phpUrl + 'index.php?module=json&action=getSummary'
     })
     .then(function successCallback(response) {
       $scope.numUsers = response.data.count.users;

@@ -50,7 +50,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'core/index.php?module=json&action=getRequests',
+          'ajax': config.phpUrl + 'index.php?module=json&action=getRequests',
           'columns': [{
             'data': 'time'
           }, {
@@ -136,7 +136,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           },
           'processing': true,
           'serverSide': true,
-          'ajax': 'core/index.php?module=json&action=getRequestErrors&id=' + $scope.requestID,
+          'ajax': config.phpUrl + 'index.php?module=json&action=getRequestErrors&id=' + $scope.requestID,
           'columns': [{
             'data': 'suspicious'
           }, {

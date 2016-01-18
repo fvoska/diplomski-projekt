@@ -72,6 +72,23 @@ class Json extends Config
             }
         }
 
+        $ipMin = $_GET['ipMin'];
+        $ipMax = $_GET['ipMax'];
+        if ($ipMin && !$ipMax) {
+            $ipMax = '255.255.255.255';
+        }
+        if (!$ipMin && $ipMax) {
+            $ipMin = '0.0.0.0';
+        }
+        if (filter_var($ipMin, FILTER_VALIDATE_IP) && filter_var($ipMax, FILTER_VALIDATE_IP)) {
+            if ($_GET['onlyLatestIP'] == 'true') {
+                $where .= ' AND INET_ATON(u.lastIP) BETWEEN INET_ATON("' . $ipMin . '") AND INET_ATON("' . $ipMax . '")';
+            }
+            else {
+                $where .= ' AND EXISTS (SELECT uip.IP FROM user_ip uip WHERE uip.userID=u.userID AND INET_ATON(uip.IP) BETWEEN INET_ATON("' . $ipMin . '") AND INET_ATON("' . $ipMax . '"))';
+            }
+        }
+
         // count without pagination
         $addPagination = '';
 
