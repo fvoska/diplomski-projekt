@@ -36,6 +36,23 @@ class Json extends Config
         echo json_encode($result);
     }
 
+    public function getNetworks()
+    {
+        $result = array();
+        $data = $this->dbh->prepare("SELECT n.name AS netName, n.mask AS netMask FROM networks n ORDER BY n.name ASC");
+        $data->execute();
+        $data = $data->fetchAll();
+        $result['networks'] = array();
+        foreach ($data as $item) {
+            $result['networks'][] = array(
+                'name' => $item['netName'],
+                'mask' => $item['netMask']
+            );
+        }
+
+        echo json_encode($result);
+    }
+
     public function getUsers()
     {
         $result = array();

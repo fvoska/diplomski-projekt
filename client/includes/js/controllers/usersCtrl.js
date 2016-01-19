@@ -12,11 +12,109 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
     $rootScope.title_detail = ' ' + $scope.userID;
   };
 
+  function long2ip(ip) {
+    //  discuss at: http://phpjs.org/functions/long2ip/
+    // original by: Waldo Malqui Silva
+    //   example 1: long2ip( 3221234342 );
+    //   returns 1: '192.0.34.166'
+
+    if (!isFinite(ip))
+      return false;
+
+    return [ip >>> 24, ip >>> 16 & 0xFF, ip >>> 8 & 0xFF, ip & 0xFF].join('.');
+  }
+
+  function ip2long(IP) {
+    //  discuss at: http://phpjs.org/functions/ip2long/
+    // original by: Waldo Malqui Silva
+    // improved by: Victor
+    //  revised by: fearphage (http://http/my.opera.com/fearphage/)
+    //  revised by: Theriault
+    //   example 1: ip2long('192.0.34.166');
+    //   returns 1: 3221234342
+    //   example 2: ip2long('0.0xABCDEF');
+    //   returns 2: 11259375
+    //   example 3: ip2long('255.255.255.256');
+    //   returns 3: false
+
+    var i = 0;
+    // PHP allows decimal, octal, and hexadecimal IP components.
+    // PHP allows between 1 (e.g. 127) to 4 (e.g 127.0.0.1) components.
+    IP = IP.match(
+      /^([1-9]\d*|0[0-7]*|0x[\da-f]+)(?:\.([1-9]\d*|0[0-7]*|0x[\da-f]+))?(?:\.([1-9]\d*|0[0-7]*|0x[\da-f]+))?(?:\.([1-9]\d*|0[0-7]*|0x[\da-f]+))?$/i
+    ); // Verify IP format.
+    if (!IP) {
+      return false; // Invalid format.
+    }
+    // Reuse IP variable for component counter.
+    IP[0] = 0;
+    for (i = 1; i < 5; i += 1) {
+      IP[0] += !! ((IP[i] || '')
+        .length);
+      IP[i] = parseInt(IP[i]) || 0;
+    }
+    // Continue to use IP for overflow values.
+    // PHP does not allow any component to overflow.
+    IP.push(256, 256, 256, 256);
+    // Recalculate overflow of last component supplied to make up for missing components.
+    IP[4 + IP[0]] *= Math.pow(256, 4 - IP[0]);
+    if (IP[1] >= IP[5] || IP[2] >= IP[6] || IP[3] >= IP[7] || IP[4] >= IP[8]) {
+      return false;
+    }
+    return IP[1] * (IP[0] === 1 || 16777216) + IP[2] * (IP[0] <= 2 || 65536) + IP[3] * (IP[0] <= 3 || 256) + IP[4] * 1;
+  }
+
+  function cidrToRange(cidr) {
+    var range = [2];
+    cidr = cidr.split('/');
+    if (cidr.length < 2) {
+      range[0] = cidr[0];
+      range[1] = cidr[0];
+      return range;
+    }
+    var cidr_1 = parseInt(cidr[1])
+    range[0] = long2ip((ip2long(cidr[0])) & ((-1 << (32 - cidr_1))));
+    start = ip2long(range[0])
+    range[1] = long2ip( start + Math.pow(2, (32 - cidr_1)) - 1);
+    return range;
+  }
+
+  var networks = [
+    {
+      'name': '-',
+      'min': '',
+      'max': '',
+      'mask': ''
+    }
+  ]
+
+  $scope.nets = networks;
+
   $(document).ready(function() {
     var location = $location.$$path.split('/');
     switch (location[location.length - 1]) {
       // Users list view.
       case 'users':
+        // Get networks.
+        $http({
+          method: 'GET',
+          url: config.phpUrl + 'index.php?module=json&action=getNetworks'
+        })
+        .then(function successCallback(response) {
+          var networkMasks = response.data.networks;
+          for (var i = 0; i < networkMasks.length; i++) {
+            var range = cidrToRange(networkMasks[i].mask);
+            networks.push({
+              'name': networkMasks[i].name,
+              'min': range[0],
+              'max': range[1],
+              'mask': networkMasks[i].mask
+            });
+          }
+          $scope.complete();
+        }, function errorCallback(response) {
+          $scope.complete();
+        });
         // Header translations.
         $('#dataTables-users thead th').each(function() {
           var title = $(this).text();
@@ -29,6 +127,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             $(this).html('<div class="IPSearchContainer" ng-hide="enteredIPMin || enteredIPMax"><input id="lastIPSerach" ng-model="enteredIP" type="search" class="form-control input-sm footer-search" placeholder="' + trans('filter_by') + ' \'' + trans(title) + '\'" /></div>');
             $(this).append('<div class="IPSearchContainer IPSCs" ng-hide="enteredIP"><span class="IPSearchLabel">' + trans('ip_min') + '</span><input id="IPRangeMin" ng-model="enteredIPMin" type="search" class="form-control input-sm footer-search" placeholder="0.0.0.0" /></div>');
             $(this).append('<div class="IPSearchContainer IPSCs" ng-hide="enteredIP"><span class="IPSearchLabel">' + trans('ip_max') + '</span><input id="IPRangeMax" ng-model="enteredIPMax" type="search" class="form-control input-sm footer-search" placeholder="255.255.255.255" /></div>');
+            $(this).append('<div class="IPSearchContainer"><label for="selectNet"><span class="IPSearchLabel">' + trans('ip_net') + '</span></label><select class="form-control" id="selectNet"><option ng-repeat="net in nets" value="{{ net.min }}-{{ net.max }}">{{ net.name }} {{ net.mask }}</option></select></div>');
             $(this).append('<div class="IPSearchContainer" ng-hide="enteredIP"><div class="checkbox SearchChk"><label><input id="ChkLatestIP" type="checkbox" value="" checked>' + trans('only_latest') + '</label></div></div>');
             $compile($('.IPSearchContainer'))($scope);
           } else if (title != 'actions') {
@@ -75,7 +174,6 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
                 $scope.numErrorsDistinct = json.count.errors_distinct;
                 $scope.avgProcessingTime = json.count.avg_processing_time;
               })
-              console.log(json)
               return json.data;
             }
           },
@@ -98,6 +196,18 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             }
           }]
         });
+
+        $('#selectNet').change(function() {
+          var that = this;
+          $scope.$apply(function() {
+            $scope.enteredIPMin = $(that).val().split('-')[0];
+            $scope.enteredIPMax = $(that).val().split('-')[1];
+            setTimeout(function() {
+              table.draw();
+            }, 100);
+          });
+        });
+
         // Set search handler.
         table.columns().every(function() {
           var that = this;

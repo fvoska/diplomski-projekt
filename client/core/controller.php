@@ -71,6 +71,10 @@ class Controller extends Config{
                 $json->getErrorsRequests();
                 break;
 
+            case "getNetworks";
+                $json->getNetworks();
+                break;
+
         }
 
     }

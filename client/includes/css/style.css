@@ -205,3 +205,9 @@ table#dataTables-users > tbody > tr > td:first-child {
     white-space: pre;
     font-size: 0.75em;
 }
+#selectNet {
+    margin-left: 8px;
+    width: 80%;
+    font-size: 0.75em;
+    color: #999;
+}
