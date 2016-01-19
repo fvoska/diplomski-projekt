@@ -109,7 +109,10 @@ class Json extends Config
         $addPagination = '';
 
         // add data
-        $data = $this->dbh->prepare("SELECT u.userID AS id, UNIX_TIMESTAMP(u.timeAppeared) AS first_appear, u.lastIP AS last_ip, COUNT(r.reqID) as num_requests FROM user u JOIN request r ON r.userID=u.userID $where GROUP BY u.userID $havingSQL $addPagination");
+        $data = $this->dbh->prepare("SELECT u.userID AS id, UNIX_TIMESTAMP(u.timeAppeared) AS first_appear, u.lastIP AS last_ip, COUNT(r.reqID) as num_requests
+                                     FROM user u JOIN request r ON r.userID=u.userID
+                                     JOIN usr_req_counter urq ON urq.userID = u.userID
+                                     $where GROUP BY u.userID $addPagination");
         if ($columns) {
             $i = 0;
             foreach ($columns as $item) {
