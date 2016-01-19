@@ -79,8 +79,6 @@ class Controller extends Config{
         // convert string to json object
         $json=json_decode($argv[1]);
 
-        //$datetime=date ("Y-m-d H:i:s", mktime());
-
         //check if user exists
         $userExists=$this->dbh->prepare("SELECT userID FROM user WHERE userID=:userID");
         $userExists->bindParam("userID",$json->userID);
@@ -93,7 +91,6 @@ class Controller extends Config{
         }else{ // otherwise, insert new user
             $ins=$this->dbh->prepare("INSERT INTO user (userID, timeAppeared, lastIP) VALUES (:userID, :timeAppeared, :lastIP)");
             $ins->bindParam("userID", $json->userID);
-            //$ins->bindParam("timeAppeared", $datetime);
             $ins->bindParam("timeAppeared", $json->requestTime);
             $ins->bindParam("lastIP", $json->ip);
             $ins->execute();
@@ -107,7 +104,7 @@ class Controller extends Config{
 
         if($userIP->fetch()){ // is user and ip already exists in table, update ip time
             $upd=$this->dbh->prepare("UPDATE user_ip SET time=:time WHERE userID=:userID AND IP=:IP");
-            $upd->bindParam("time", $datetime);
+            $upd->bindParam("time", $json->requestTime);
             $upd->bindParam("userID", $json->userID);
             $upd->bindParam("IP", $json->ip);
             $upd->execute();
@@ -115,7 +112,7 @@ class Controller extends Config{
         }else{ // otherwise, insert new address
             $ins=$this->dbh->prepare("INSERT INTO user_ip (userID, IP, time) VALUES (:userID, :IP, :time)");
             $ins->bindParam("userID", $json->userID);
-            $ins->bindParam("time", $datetime);
+            $ins->bindParam("time", $json->requestTime);
             $ins->bindParam("IP", $json->ip);
             $ins->execute();
         }
