@@ -16,7 +16,6 @@ angular.module('diplomski-projekt').controller('homeCtrl', function($scope, $htt
     })
     .then(function successCallback(response) {
       $scope.numUsers = response.data.count.users;
-      console.log($scope.numUsers);
       $scope.numRequests = response.data.count.requests;
       $scope.numErrors = response.data.count.errors;
       $scope.numErrorsDistinct = response.data.count.errors_distinct;

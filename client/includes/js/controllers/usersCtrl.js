@@ -67,6 +67,16 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
                 'ipMax': $('#IPRangeMax').val(),
                 'onlyLatestIP': $('#ChkLatestIP').is(':checked')
               });
+            },
+            'dataSrc': function(json) {
+              $scope.$apply(function() {
+                $scope.numRequests = json.count.requests;
+                $scope.numErrors = json.count.errors;
+                $scope.numErrorsDistinct = json.count.errors_distinct;
+                $scope.avgProcessingTime = json.count.avg_processing_time;
+              })
+              console.log(json)
+              return json.data;
             }
           },
           'columns': [{

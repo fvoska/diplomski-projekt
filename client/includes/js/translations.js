@@ -36,6 +36,7 @@ var translations = {
     'ip_min': 'IP od',
     'ip_max': 'IP do',
     'only_latest': 'Provjeravaj samo zadnje IP adrese<br>(ne cijelu povijest IP adresa korisnika)',
+    'stats_for_user_range': 'Statistika za prikazani raspon korisnika',
 
     /* Requests */
     'req_word_count': 'Broj riječi',

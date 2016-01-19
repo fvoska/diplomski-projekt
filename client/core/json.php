@@ -63,7 +63,7 @@ class Json extends Config
             foreach ($columns as $item) {
                 if ($value = $item['search']['value']) {
                     if ($i == 2) {
-                        $havingSQL = " HAVING COUNT(r.reqID)=:p$i";
+                        $where .= " AND urq.reqCount =:p$i";
                     } else {
                         $where .= ' AND '.$columnArray[$i]." LIKE :p$i";
                     }
@@ -82,10 +82,9 @@ class Json extends Config
         }
         if (filter_var($ipMin, FILTER_VALIDATE_IP) && filter_var($ipMax, FILTER_VALIDATE_IP)) {
             if ($_GET['onlyLatestIP'] == 'true') {
-                $where .= ' AND INET_ATON(u.lastIP) BETWEEN INET_ATON("' . $ipMin . '") AND INET_ATON("' . $ipMax . '")';
-            }
-            else {
-                $where .= ' AND EXISTS (SELECT uip.IP FROM user_ip uip WHERE uip.userID=u.userID AND INET_ATON(uip.IP) BETWEEN INET_ATON("' . $ipMin . '") AND INET_ATON("' . $ipMax . '"))';
+                $where .= ' AND INET_ATON(u.lastIP) BETWEEN INET_ATON(:ipMin) AND INET_ATON(:ipMax)';
+            } else {
+                $where .= ' AND EXISTS (SELECT uip.IP FROM user_ip uip WHERE uip.userID=u.userID AND INET_ATON(uip.IP) BETWEEN INET_ATON(:ipMin) AND INET_ATON(:ipMax))';
             }
         }
 
@@ -93,7 +92,7 @@ class Json extends Config
         $addPagination = '';
 
         // add data
-        $data = $this->dbh->prepare("SELECT u.userID AS id, UNIX_TIMESTAMP(u.timeAppeared) AS first_appear, u.lastIP AS last_ip, COUNT(r.reqID) as num_requests FROM user u  JOIN request r ON r.userID=u.userID $where GROUP BY u.userID $havingSQL $addPagination");
+        $data = $this->dbh->prepare("SELECT u.userID AS id, UNIX_TIMESTAMP(u.timeAppeared) AS first_appear, u.lastIP AS last_ip, COUNT(r.reqID) as num_requests FROM user u JOIN request r ON r.userID=u.userID $where GROUP BY u.userID $havingSQL $addPagination");
         if ($columns) {
             $i = 0;
             foreach ($columns as $item) {
@@ -108,8 +107,95 @@ class Json extends Config
                 ++$i;
             }
         }
+        if (filter_var($ipMin, FILTER_VALIDATE_IP) && filter_var($ipMax, FILTER_VALIDATE_IP)) {
+            $data->bindValue('ipMin', $ipMin);
+            $data->bindValue('ipMax', $ipMax);
+        }
         $data->execute();
         $result['recordsFiltered'] = $data->rowCount();
+
+        // stats for user range
+        $result['count'] = array();
+        $countRequests = $this->dbh->prepare("SELECT COUNT(r.reqID) AS requests
+                                              FROM user u JOIN request r ON r.userID=u.userID
+                                              JOIN usr_req_counter urq ON urq.userID = u.userID
+                                              $where");
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $value = $value;
+                    } else {
+                        $value = '%'.$value.'%';
+                    }
+                    $countRequests->bindValue("p$i", $value);
+                }
+                ++$i;
+            }
+        }
+        if (filter_var($ipMin, FILTER_VALIDATE_IP) && filter_var($ipMax, FILTER_VALIDATE_IP)) {
+            $countRequests->bindValue('ipMin', $ipMin);
+            $countRequests->bindValue('ipMax', $ipMax);
+        }
+        $countRequests->execute();
+        $countRequests = $countRequests->fetch();
+        $result['count']['requests'] = (int) $countRequests['requests'];
+
+        $countErrors = $this->dbh->prepare("SELECT SUM(e.numOccur) AS errors, COUNT(DISTINCT e.errorPhrase) AS errors_distinct
+                                            FROM user u JOIN request r ON r.userID=u.userID
+                                            JOIN usr_req_counter urq ON urq.userID = u.userID
+                                            JOIN request_error re ON r.reqID=re.reqID
+                                            JOIN error e ON re.errorID = e.errorID
+                                            $where $addPagination");
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $value = $value;
+                    } else {
+                        $value = '%'.$value.'%';
+                    }
+                    $countErrors->bindValue("p$i", $value);
+                }
+                ++$i;
+            }
+        }
+        if (filter_var($ipMin, FILTER_VALIDATE_IP) && filter_var($ipMax, FILTER_VALIDATE_IP)) {
+            $countErrors->bindValue('ipMin', $ipMin);
+            $countErrors->bindValue('ipMax', $ipMax);
+        }
+        $countErrors->execute();
+        $countErrors = $countErrors->fetch();
+        $result['count']['errors'] = (int) $countErrors['errors'];
+        $result['count']['errors_distinct'] = (int) $countErrors['errors_distinct'];
+
+        $avgTime = $this->dbh->prepare("SELECT ROUND(AVG(r.timeProcessed),2) AS avg_processing_time
+                                        FROM user u JOIN request r ON r.userID = u.userID
+                                        JOIN usr_req_counter urq ON urq.userID = u.userID
+                                        $where");
+        if ($columns) {
+            $i = 0;
+            foreach ($columns as $item) {
+                if ($value = $item['search']['value']) {
+                    if ($i == 2) {
+                        $value = $value;
+                    } else {
+                        $value = '%'.$value.'%';
+                    }
+                    $avgTime->bindValue("p$i", $value);
+                }
+                ++$i;
+            }
+        }
+        if (filter_var($ipMin, FILTER_VALIDATE_IP) && filter_var($ipMax, FILTER_VALIDATE_IP)) {
+            $avgTime->bindValue('ipMin', $ipMin);
+            $avgTime->bindValue('ipMax', $ipMax);
+        }
+        $avgTime->execute();
+        $avgTime = $avgTime->fetch();
+        $result['count']['avg_processing_time'] = (float) $avgTime['avg_processing_time'];
 
         // filtered records
         $start = $_GET['start'];
@@ -117,7 +203,13 @@ class Json extends Config
         (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
 
         // add data
-        $data = $this->dbh->prepare("SELECT u.userID AS id, UNIX_TIMESTAMP(u.timeAppeared) AS first_appear, u.lastIP AS last_ip, COUNT(r.reqID) as num_requests FROM user u  JOIN request r ON r.userID=u.userID $where GROUP BY u.userID $havingSQL $orderSQL $addPagination");
+        $data = $this->dbh->prepare("SELECT u.userID AS id,
+                                            UNIX_TIMESTAMP(u.timeAppeared) AS first_appear,
+                                            u.lastIP AS last_ip,
+                                            COUNT(r.reqID) as num_requests
+                                     FROM user u JOIN request r ON r.userID = u.userID
+                                     JOIN usr_req_counter urq ON urq.userID = u.userID
+                                     $where GROUP BY u.userID $orderSQL $addPagination");
         if ($columns) {
             $i = 0;
             foreach ($columns as $item) {
@@ -131,6 +223,10 @@ class Json extends Config
                 }
                 ++$i;
             }
+        }
+        if (filter_var($ipMin, FILTER_VALIDATE_IP) && filter_var($ipMax, FILTER_VALIDATE_IP)) {
+            $data->bindValue('ipMin', $ipMin);
+            $data->bindValue('ipMax', $ipMax);
         }
         $data->execute();
         $data = $data->fetchAll();
@@ -604,7 +700,7 @@ class Json extends Config
         $countAll = $countAll->fetch();
         $result['recordsTotal'] = (int) $countAll['recordsTotal'];
 
-        $columnArray=array("e.errorPhrase","e.errorTypeID","SUM(e.numOccur)");
+        $columnArray = array('e.errorPhrase', 'e.errorTypeID', 'SUM(e.numOccur)');
 
         // where part
         $where = 'WHERE 1=1';

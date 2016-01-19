@@ -78,3 +78,5 @@ CREATE TABLE `request_error` (
         ON DELETE NO ACTION
         ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE VIEW usr_req_counter AS SELECT u.userID, COUNT(r.reqID) AS reqCount FROM user u JOIN request r ON r.userID = u.userID GROUP BY u.userID;
