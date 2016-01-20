@@ -86,7 +86,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
         // Details.
         $http({
           method: 'GET',
-          url: 'core/index.php?module=json&action=getRequestDetails&id=' + $scope.requestID
+          url: config.phpUrl + 'index.php?module=json&action=getRequestDetails&id=' + $scope.requestID
         })
         .then(function successCallback(response) {
           $scope.requestID = response.data.id;

@@ -88,6 +88,8 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
     }
   ]
 
+  var dayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
   $scope.nets = networks;
 
   $(document).ready(function() {
@@ -310,13 +312,60 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             $scope.ipHistory = response.data.ip_history;
             $scope.errorTypes = response.data.error_stats;
             var total = 0;
-            for (var i in $scope.errorTypes) {
-              if ($scope.errorTypes.hasOwnProperty(i)) {
-                $scope.errorTypes[i].label = trans($scope.errorTypes[i].label);
-                total += $scope.errorTypes[i].value;
+            for (var eti in $scope.errorTypes) {
+              if ($scope.errorTypes.hasOwnProperty(eti)) {
+                $scope.errorTypes[eti].label = trans($scope.errorTypes[eti].label);
+                total += $scope.errorTypes[eti].value;
               }
             }
             $scope.activityMonthly = response.data.usage_stats.monthly;
+            $scope.activityDaily = response.data.usage_stats.daily;
+            var days = [];
+            for (var dli = 0; dli < dayLabels.length; dli++) {
+              var hasDay = false;
+              var hasDayIndex = 0;
+              for (var adi = 0; adi < $scope.activityDaily.length; adi++) {
+                if (dayLabels[dli] == $scope.activityDaily[adi].day) {
+                  hasDay = true;
+                  hasDayIndex = adi;
+                  break;
+                }
+              }
+              if (hasDay) {
+                days.push({
+                  'day': trans($scope.activityDaily[hasDayIndex].day),
+                  'requests': $scope.activityDaily[hasDayIndex].requests
+                });
+              }
+              else {
+                days.push({
+                  'day': trans(dayLabels[dli]),
+                  'requests': 0
+                });
+              }
+            }
+            $scope.activityHourly = response.data.usage_stats.hourly;
+            var hours = [];
+            for (var hi = 0; hi < 24; hi++) {
+              var hasHour = false;
+              var hasHourIndex = 0;
+              for (var ahi = 0; ahi < $scope.activityHourly.length; ahi++) {
+                if (hi == $scope.activityHourly[ahi].hour) {
+                  hasHour = true;
+                  hasHourIndex = ahi;
+                  break;
+                }
+              }
+              if (hasHour) {
+                hours.push($scope.activityHourly[hasHourIndex]);
+              }
+              else {
+                hours.push({
+                  'hour': hi,
+                  'requests': 0
+                });
+              }
+            }
             $scope.requestStats = response.data.request_stats;
             $scope.errorPercentage = $scope.requestStats.error_percentage;
             $scope.avgWordCount = $scope.errorPercentage.avg_word_count;
@@ -349,7 +398,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             }
 
             Morris.Area({
-              element: 'morris-line-chart-activity-monthly',
+              element: 'morris-line-chart-activity',
               resize: true,
               data: $scope.activityMonthly,
               xkey: 'month',
@@ -357,6 +406,53 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
               labels: [trans('num_requests')],
               lineColors: ['#337ab7']
             });
+
+            $('#selectGraph').change(function() {
+              var $this = $(this);
+              switch ($this.val()) {
+                case 'months':
+                  $('#morris-line-chart-activity').empty();
+                  Morris.Area({
+                    element: 'morris-line-chart-activity',
+                    resize: true,
+                    data: $scope.activityMonthly,
+                    xkey: 'month',
+                    ykeys: ['requests'],
+                    labels: [trans('num_requests')],
+                    lineColors: ['#337ab7']
+                  });
+                  break;
+                case 'days':
+                  $('#morris-line-chart-activity').empty();
+                  Morris.Area({
+                    element: 'morris-line-chart-activity',
+                    resize: true,
+                    parseTime: false,
+                    xLabelMargin: 0,
+                    data: days,
+                    xkey: 'day',
+                    ykeys: ['requests'],
+                    labels: [trans('num_requests')],
+                    lineColors: ['#337ab7']
+                  });
+                  break;
+                case 'hours':
+                  $('#morris-line-chart-activity').empty();
+                  Morris.Area({
+                    element: 'morris-line-chart-activity',
+                    resize: true,
+                    parseTime: false,
+                    xLabelMargin: 0,
+                    data: hours,
+                    xkey: 'hour',
+                    ykeys: ['requests'],
+                    labels: [trans('num_requests')],
+                    lineColors: ['#337ab7']
+                  });
+                  break;
+              }
+            });
+
             $scope.complete();
           }, function errorCallback(response) {
             // called asynchronously if an error occurs

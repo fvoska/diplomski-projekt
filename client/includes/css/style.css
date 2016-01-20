@@ -211,3 +211,10 @@ table#dataTables-users > tbody > tr > td:first-child {
     font-size: 0.75em;
     color: #999;
 }
+.sGraph {
+    display: inline-block;
+    width: 10em;
+    float: right;
+    margin-top: -7px;
+    margin-right: -11px;
+}

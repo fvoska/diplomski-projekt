@@ -90,11 +90,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{ trans('chart_activity_monthly') }}
+                    <select class="form-control sGraph" id="selectGraph">
+                        <option value="months">{{ trans('months') }}</option>
+                        <option value="days">{{ trans('days') }}</option>
+                        <option value="hours">{{ trans('hours') }}</option>
+                    </select>
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
                     <span class="middleSpinner" ng-hide="activityMonthly"><i class="fa fa-spinner fa-spin"></i></span>
-                    <div id="morris-line-chart-activity-monthly"></div>
+                    <div id="morris-line-chart-activity"></div>
                 </div>
                 <!-- /.panel-body -->
             </div>

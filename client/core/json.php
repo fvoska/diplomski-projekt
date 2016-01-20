@@ -430,6 +430,34 @@ class Json extends Config
                     $result['usage_stats']['monthly'][] = array('month' => $item['month'], 'requests' => (int) $item['requests']);
                 }
 
+                // add daily stats (group results by day in the week)
+                $dailyStats = $this->dbh->prepare("SELECT DAYNAME(timeRequested) AS day, COUNT(reqID) as requests
+                                                    FROM request
+                                                    WHERE userID=:userID
+                                                    GROUP BY day
+                                                    ORDER BY WEEKDAY(timeRequested)");
+                $dailyStats->bindParam('userID', $id);
+                $dailyStats->execute();
+                $dailyStats = $dailyStats->fetchAll();
+                $result['usage_stats']['daily'] = array();
+                foreach ($dailyStats as $item) {
+                    $result['usage_stats']['daily'][] = array('day' => $item['day'], 'requests' => (int) $item['requests']);
+                }
+
+                // add hourly stats (group results by hours in day)
+                $hourlyStats = $this->dbh->prepare("SELECT HOUR(timeRequested) AS hour, COUNT(reqID) as requests
+                                                    FROM request
+                                                    WHERE userID=:userID
+                                                    GROUP BY hour
+                                                    ORDER BY hour");
+                $hourlyStats->bindParam('userID', $id);
+                $hourlyStats->execute();
+                $hourlyStats = $hourlyStats->fetchAll();
+                $result['usage_stats']['hourly'] = array();
+                foreach ($hourlyStats as $item) {
+                    $result['usage_stats']['hourly'][] = array('hour' => $item['hour'], 'requests' => (int) $item['requests']);
+                }
+
                 // add request stats
                 $numRequests = $this->dbh->prepare('SELECT COUNT(reqID) as num_requests FROM request WHERE userID=:userID');
                 $numRequests->bindParam('userID', $id);
