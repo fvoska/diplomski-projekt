@@ -336,8 +336,9 @@ class Json extends Config
             (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
 
             // add requests data
-            $data = $this->dbh->prepare("SELECT r.reqID AS id, timeRequested AS time,ROUND(timeProcessed,2) AS processing, COUNT(re.errorID) as numErrors
+            $data = $this->dbh->prepare("SELECT r.reqID AS id, timeRequested AS time,ROUND(timeProcessed,2) AS processing, rec.errors as numErrors
                                         FROM request r
+                                        JOIN req_error_counter rec ON r.reqID = rec.reqID
                                         LEFT JOIN request_error re ON re.reqID=r.reqID
                                         WHERE r.userID=:userID
                                         $where
@@ -557,8 +558,9 @@ class Json extends Config
         (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
 
         // add data
-        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, rec.errors AS numErrors
                                       FROM request r
+                                      JOIN req_error_counter rec ON r.reqID = rec.reqID
                                       LEFT JOIN request_error re ON r.reqID=re.reqID
                                       $where
                                       GROUP BY r.reqID
@@ -602,10 +604,9 @@ class Json extends Config
         if ($id) {
 
             // request info
-            $request = $this->dbh->prepare('SELECT r.userID AS user, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing_time, r.reqTextLength AS word_count, COUNT(re.errorID) AS num_errors
+            $request = $this->dbh->prepare('SELECT r.userID AS user, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing_time, r.reqTextLength AS word_count, rec.errors AS num_errors, rec.errors_distinct AS num_errors_distinct
                                             FROM request r
-                                            JOIN request_error re ON r.reqID=re.reqID
-                                            WHERE r.reqID=:reqID
+                                            JOIN req_error_counter rec ON r.reqID=rec.reqID AND r.reqID=:reqID
                                             ');
             $request->bindParam('reqID', $id);
             $request->execute();
@@ -618,6 +619,7 @@ class Json extends Config
                     'processing_time' => $request['processing_time'],
                     'word_count' => $request['word_count'],
                     'num_errors' => $request['num_errors'],
+                    'num_errors_distinct' => $request['num_errors_distinct'],
                 );
                 echo json_encode($result);
             }
@@ -999,13 +1001,12 @@ class Json extends Config
         (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
 
         // add data
-        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, rec.errors AS numErrors
                                       FROM request r
+                                      JOIN req_error_counter rec ON rec.reqID = r.reqID
                                       LEFT JOIN request_error re ON r.reqID=re.reqID
                                       JOIN error e ON re.errorID=e.errorID AND e.errorPhrase=:errorPhrase
                                       $where
-                                      GROUP BY r.reqID
-                                      $havingSQL
                                       $orderSQL
                                       $addPagination
                                     ");

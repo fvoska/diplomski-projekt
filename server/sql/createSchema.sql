@@ -81,6 +81,12 @@ CREATE TABLE `request_error` (
 
 CREATE VIEW usr_req_counter AS SELECT u.userID, COUNT(r.reqID) AS reqCount FROM user u JOIN request r ON r.userID = u.userID GROUP BY u.userID;
 
+CREATE VIEW req_error_counter AS SELECT r.reqID AS reqID, SUM(e.numOccur) AS errors, COUNT(DISTINCT e.errorID) AS errors_distinct
+FROM error e
+JOIN request_error re ON e.errorID = re.errorID
+JOIN request r on r.reqID = re.reqID
+GROUP BY r.reqID;
+
 CREATE TABLE `networks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
