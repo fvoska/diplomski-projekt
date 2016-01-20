@@ -61,8 +61,8 @@
             {{ trans('req_word_count') }}
         </div>
         <div class="col-sm-9">
-            <span ng-hide="wordCount"><i class="fa fa-spinner fa-spin"></i></span>
-            <span ng-if="wordCount" class="fader2" ng-bind="wordCount"></span>
+            <span ng-hide="wordCount >= 0"><i class="fa fa-spinner fa-spin"></i></span>
+            <span ng-if="wordCount >= 0" class="fader2" ng-bind="wordCount"></span>
         </div>
     </div>
     <!-- /.row -->
@@ -72,8 +72,8 @@
             {{ trans('num_errors_distinct') }}
         </div>
         <div class="col-sm-9">
-            <span ng-hide="reqErrorsDistinct"><i class="fa fa-spinner fa-spin"></i></span>
-            <span ng-if="reqErrorsDistinct" class="fader2" ng-bind="reqErrorsDistinct"></span>
+            <span ng-hide="reqErrorsDistinct >= 0"><i class="fa fa-spinner fa-spin"></i></span>
+            <span ng-if="reqErrorsDistinct >= 0" class="fader2" ng-bind="reqErrorsDistinct"></span>
         </div>
     </div>
 
@@ -82,8 +82,8 @@
             {{ trans('num_errors') }}
         </div>
         <div class="col-sm-9">
-            <span ng-hide="reqErrors"><i class="fa fa-spinner fa-spin"></i></span>
-            <span ng-if="reqErrors" class="fader2" ng-bind="reqErrors"></span>
+            <span ng-hide="reqErrors >= 0"><i class="fa fa-spinner fa-spin"></i></span>
+            <span ng-if="reqErrors >= 0" class="fader2" ng-bind="reqErrors"></span>
         </div>
     </div>
     <!-- /.row -->
