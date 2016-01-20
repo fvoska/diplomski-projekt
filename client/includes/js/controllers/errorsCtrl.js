@@ -28,9 +28,11 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
         })
         .then(function successCallback(response) {
           $scope.errorTypes = response.data.error_types;
+          var total = 0;
           for (var i in $scope.errorTypes) {
             if ($scope.errorTypes.hasOwnProperty(i)) {
               $scope.errorTypes[i].label = trans($scope.errorTypes[i].label);
+              total += $scope.errorTypes[i].value;
             }
           }
           $scope.errorCount = response.data.error_count;
@@ -45,7 +47,9 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
             resize: true,
             data: $scope.errorTypes,
             colors: ['#d9534f'],
-            formatter: function (y, data) { return y }
+            formatter: function (y, data) {
+              return y + ' (' + (y/total * 100).toFixed(2) + '%)'
+            }
           });
           $scope.complete();
         }, function errorCallback(response) {

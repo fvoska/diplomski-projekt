@@ -309,9 +309,11 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             $scope.numRequests = response.data.request_stats.num_requests;
             $scope.ipHistory = response.data.ip_history;
             $scope.errorTypes = response.data.error_stats;
+            var total = 0;
             for (var i in $scope.errorTypes) {
               if ($scope.errorTypes.hasOwnProperty(i)) {
                 $scope.errorTypes[i].label = trans($scope.errorTypes[i].label);
+                total += $scope.errorTypes[i].value;
               }
             }
             $scope.activityMonthly = response.data.usage_stats.monthly;
@@ -331,7 +333,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
                 }],
                 colors: ['#5cb85c'],
                 formatter: function(y, data) {
-                  return ''
+                  return '';
                 }
               });
             } else {
@@ -341,7 +343,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
                 data: $scope.errorTypes,
                 colors: ['#d9534f'],
                 formatter: function(y, data) {
-                  return y
+                  return y + ' (' + (y/total * 100).toFixed(2) + '%)'
                 }
               });
             }

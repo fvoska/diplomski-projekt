@@ -402,11 +402,11 @@ class Json extends Config
                 }
 
                 // add error stats
-                $errorStats = $this->dbh->prepare('SELECT et.errorTypeID AS label, COUNT(e.errorID) AS value FROM error_type et
-                                                  JOIN error e ON e.errorTypeID=et.errorTypeID
-                                                  JOIN request_error re ON e.errorID=re.errorID
-                                                  JOIN request r ON r.reqID=re.reqID
-                                                  WHERE r.userID=:userID GROUP BY et.errorTypeID ORDER BY et.errorTypeID ASC');
+                $errorStats = $this->dbh->prepare('SELECT e.errorTypeID AS label, SUM(e.numOccur) AS value
+                                                   FROM error e
+                                                   JOIN request_error re ON e.errorID=re.errorID
+                                                   JOIN request r ON r.reqID=re.reqID AND r.userID = :userID
+                                                   GROUP BY e.errorTypeID ORDER BY SUM(e.numOccur) DESC');
                 $errorStats->bindParam('userID', $id);
                 $errorStats->execute();
                 $errorStats = $errorStats->fetchAll();
