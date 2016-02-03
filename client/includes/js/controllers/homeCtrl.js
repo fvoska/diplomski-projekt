@@ -5,7 +5,7 @@ angular.module('diplomski-projekt').controller('homeCtrl', function($scope, $htt
 
   $scope.complete = function () {
     cfpLoadingBar.complete();
-  }
+  };
 
   $scope.start();
 

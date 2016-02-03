@@ -5,4 +5,4 @@ var config = {
   language: 'hr',
   slideDownSpeed: 250,
   slideUpSpeed: 250
-}
+};

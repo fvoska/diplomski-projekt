@@ -99,10 +99,10 @@ var translations = {
     'previous': 'Prethodna',
     'processing': '<div class="loader">Obrađujem</div>'
   }
-}
+};
 
 function trans(code) {
-  if (code == undefined) {
+  if (code === undefined) {
     return '';
   }
   var t = translations[config.language][code];

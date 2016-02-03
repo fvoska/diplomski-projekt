@@ -4,7 +4,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
   };
   $scope.complete = function() {
     cfpLoadingBar.complete();
-  }
+  };
   $scope.start();
 
   $scope.requestID = $routeParams.id;
@@ -14,6 +14,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
 
   $(document).ready(function() {
     var location = $location.$$path.split('/');
+    var table;
     switch (location[location.length - 1]) {
       // Requests list view.
       case 'requests':
@@ -30,7 +31,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           }
         });
         // Create DataTable.
-        var table = $('#dataTables-requests').DataTable({
+        table = $('#dataTables-requests').DataTable({
           'order': [[ 0, 'desc' ]],
           'responsive': true,
           'language': {
@@ -117,7 +118,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           }
         });
         // Create DataTable.
-        var table = $('#dataTables-requests-errors').DataTable({
+        table = $('#dataTables-requests-errors').DataTable({
           'responsive': true,
           'language': {
             'lengthMenu': trans('lengthMenu'),

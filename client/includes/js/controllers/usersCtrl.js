@@ -4,13 +4,13 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
   };
   $scope.complete = function() {
     cfpLoadingBar.complete();
-  }
+  };
   $scope.start();
 
   $scope.userID = $routeParams.id;
   if ($scope.userID) {
     $rootScope.title_detail = ' ' + $scope.userID;
-  };
+  }
 
   function long2ip(ip) {
     //  discuss at: http://phpjs.org/functions/long2ip/
@@ -72,9 +72,9 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
       range[1] = cidr[0];
       return range;
     }
-    var cidr_1 = parseInt(cidr[1])
+    var cidr_1 = parseInt(cidr[1]);
     range[0] = long2ip((ip2long(cidr[0])) & ((-1 << (32 - cidr_1))));
-    start = ip2long(range[0])
+    start = ip2long(range[0]);
     range[1] = long2ip( start + Math.pow(2, (32 - cidr_1)) - 1);
     return range;
   }
@@ -86,7 +86,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
       'max': '',
       'mask': ''
     }
-  ]
+  ];
 
   var dayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -94,6 +94,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
 
   $(document).ready(function() {
     var location = $location.$$path.split('/');
+    var table;
     switch (location[location.length - 1]) {
       // Users list view.
       case 'users':
@@ -138,7 +139,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
         });
 
         // Create DataTable.
-        var table = $('#dataTables-users').DataTable({
+        table = $('#dataTables-users').DataTable({
           'order': [
             [2, 'desc']
           ],
@@ -175,7 +176,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
                 $scope.numErrors = json.count.errors;
                 $scope.numErrorsDistinct = json.count.errors_distinct;
                 $scope.avgProcessingTime = json.count.avg_processing_time;
-              })
+              });
               return json.data;
             }
           },
@@ -246,7 +247,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
           }
         });
         // Create DataTable.
-        var table = $('#dataTables-users-requests').DataTable({
+        table = $('#dataTables-users-requests').DataTable({
           'order': [
             [2, 'desc']
           ],
@@ -371,8 +372,8 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
             $scope.avgWordCount = $scope.errorPercentage.avg_word_count;
             $scope.avgErrorCount = $scope.errorPercentage.avg_error_count;
 
-            if ($scope.errorTypes.length == 0) {
-              $('#morris-donut-chart-error-types').css('height', '400px')
+            if ($scope.errorTypes.length === 0) {
+              $('#morris-donut-chart-error-types').css('height', '400px');
               Morris.Donut({
                 element: 'morris-donut-chart-error-types',
                 resize: true,
@@ -392,7 +393,7 @@ angular.module('diplomski-projekt').controller('usersCtrl', function($scope, $ro
                 data: $scope.errorTypes,
                 colors: ['#d9534f'],
                 formatter: function(y, data) {
-                  return y + ' (' + (y/total * 100).toFixed(2) + '%)'
+                  return y + ' (' + (y/total * 100).toFixed(2) + '%)';
                 }
               });
             }

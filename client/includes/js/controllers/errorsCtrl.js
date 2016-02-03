@@ -4,7 +4,7 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
   };
   $scope.complete = function() {
     cfpLoadingBar.complete();
-  }
+  };
   $scope.start();
 
   $scope.errorID = $routeParams.id;
@@ -48,7 +48,7 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
             data: $scope.errorTypes,
             colors: ['#d9534f'],
             formatter: function (y, data) {
-              return y + ' (' + (y/total * 100).toFixed(2) + '%)'
+              return y + ' (' + (y/total * 100).toFixed(2) + '%)';
             }
           });
           $scope.complete();
@@ -206,7 +206,6 @@ angular.module('diplomski-projekt').controller('errorsCtrl', function($scope, $r
           // or server returns response with an error status.
           $scope.complete();
         });
-        break;
         break;
     }
   });
