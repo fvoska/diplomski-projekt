@@ -57,6 +57,7 @@ var translations = {
     'req_time': 'Vrijeme zahtjeva',
     'req_processing': 'Vrijeme obrade',
     'num_errors': 'Broj pogrešaka',
+    'num_errors_distinct': 'Broj jedinstvenih pogrešaka',
 
     /* Errors */
     'errors': 'Pogreške',

@@ -286,6 +286,10 @@ class Json extends Config
             $order['dir'] ? $orderDir = $order['dir'] : $orderDir = 'ASC';
             $orderSQL = "ORDER BY $orderColumn $orderDir";
 
+            if ($_GET['columns'][2]['search']['value'] == "0") {
+                $_GET['columns'][2]['search']['value'] = "null";
+            }
+
             // where part
             $where = '';
             $columns = $_GET['columns'];
@@ -294,7 +298,7 @@ class Json extends Config
                 foreach ($columns as $item) {
                     if ($value = $item['search']['value']) {
                         if ($i == 2) {
-                            $havingSQL = " HAVING COUNT(re.errorID)=:p$i";
+                            $where .= " AND rec.errors=:p$i";
                         } else {
                             $where .= ' AND CAST('.$columnArray[$i]." AS CHAR) LIKE :p$i";
                         }
@@ -304,13 +308,14 @@ class Json extends Config
             }
 
             // count without pagination
-            $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
-                                      FROM request r
-                                      LEFT JOIN request_error re ON r.reqID=re.reqID
-                                      WHERE r.userID=:userID
-                                      $where
-                                      GROUP BY r.reqID
-                                      $havingSQL
+            $data = $this->dbh->prepare("SELECT r.reqID AS id, timeRequested AS time,ROUND(timeProcessed,2) AS processing, rec.errors as numErrors
+                                        FROM request r
+                                        LEFT JOIN request_error re ON re.reqID=r.reqID
+                                        JOIN req_error_counter rec ON r.reqID = rec.reqID
+                                        WHERE r.userID=:userID
+                                        $where
+                                        GROUP BY r.reqID
+                                        $havingSQL
                                     ");
             $data->bindParam('userID', $id);
             if ($columns) {
@@ -336,9 +341,10 @@ class Json extends Config
             (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
 
             // add requests data
-            $data = $this->dbh->prepare("SELECT r.reqID AS id, timeRequested AS time,ROUND(timeProcessed,2) AS processing, COUNT(re.errorID) as numErrors
+            $data = $this->dbh->prepare("SELECT r.reqID AS id, timeRequested AS time,ROUND(timeProcessed,2) AS processing, rec.errors as numErrors
                                         FROM request r
                                         LEFT JOIN request_error re ON re.reqID=r.reqID
+                                        JOIN req_error_counter rec ON r.reqID = rec.reqID
                                         WHERE r.userID=:userID
                                         $where
                                         GROUP BY r.reqID
@@ -506,6 +512,10 @@ class Json extends Config
         $order['dir'] ? $orderDir = $order['dir'] : $orderDir = 'ASC';
         $orderSQL = "ORDER BY $orderColumn $orderDir";
 
+        if ($_GET['columns'][2]['search']['value'] == "0") {
+            $_GET['columns'][2]['search']['value'] = "null";
+        }
+
         // where part
         $where = 'WHERE 1=1';
         $columns = $_GET['columns'];
@@ -526,7 +536,7 @@ class Json extends Config
         // count without pagination
         $addPagination = '';
         // add data
-        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing
                                       FROM request r
                                       LEFT JOIN request_error re ON r.reqID=re.reqID
                                       $where
@@ -602,10 +612,9 @@ class Json extends Config
         if ($id) {
 
             // request info
-            $request = $this->dbh->prepare('SELECT r.userID AS user, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing_time, r.reqTextLength AS word_count, COUNT(re.errorID) AS num_errors
+            $request = $this->dbh->prepare('SELECT r.userID AS user, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing_time, r.reqTextLength AS word_count, rec.errors AS num_errors, rec.errors_distinct AS num_errors_distinct
                                             FROM request r
-                                            JOIN request_error re ON r.reqID=re.reqID
-                                            WHERE r.reqID=:reqID
+                                            JOIN req_error_counter rec ON r.reqID=rec.reqID AND r.reqID=:reqID
                                             ');
             $request->bindParam('reqID', $id);
             $request->execute();
@@ -616,8 +625,9 @@ class Json extends Config
                     'user' => $request['user'],
                     'time' => $request['time'],
                     'processing_time' => $request['processing_time'],
-                    'word_count' => $request['word_count'],
-                    'num_errors' => $request['num_errors'],
+                    'word_count' => (int) $request['word_count'],
+                    'num_errors' => (int) $request['num_errors'],
+                    'num_errors_distinct' => (int) $request['num_errors_distinct']
                 );
                 echo json_encode($result);
             }
@@ -895,13 +905,12 @@ class Json extends Config
 
     public function getErrorGroup()
     {
-        $group = $_GET['group'];
+        $group = stripslashes($_GET['group']);
 
-        $data = $this->dbh->prepare('SELECT e.errorPhrase AS suspicious, e.errorTypeID AS type, SUM(e.numOccur) AS totalNumOccur, COUNT(re.reqID) AS totalNumOccurReq
+        $data = $this->dbh->prepare('SELECT e.errorPhrase AS suspicious, e.errorTypeID AS type, SUM(e.numOccur) AS totalNumOccur, COUNT(DISTINCT re.reqID) AS totalNumOccurReq
                                         FROM error e
                                         LEFT JOIN request_error re ON re.errorID=e.errorID
                                         WHERE e.errorPhrase=:errorPhrase
-                                        GROUP BY e.errorPhrase, e.errorTypeID
                                         ');
         $data->bindParam('errorPhrase', $group);
         $data->execute();
@@ -927,12 +936,17 @@ class Json extends Config
 
     public function getErrorsRequests()
     {
-        $group = $_GET['group'];
+        // stripslashes for examples like 'Foo (http://hascheck.tel.fer.hr/grupa84/app/errors/group/'Foo)
+        $group = stripslashes($_GET['group']);
 
         $result = array();
 
         // total records
-        $countAll = $this->dbh->prepare('SELECT COUNT(reqID) as recordsTotal FROM request');
+        $countAll = $this->dbh->prepare("SELECT COUNT(DISTINCT re.reqID) AS recordsTotal
+                                      FROM request_error re
+                                      JOIN error e ON re.errorID=e.errorID AND e.errorPhrase=:errorPhrase
+                                    ");
+        $countAll->bindParam('errorPhrase', $group);
         $countAll->execute();
         $countAll = $countAll->fetch();
         $result['recordsTotal'] = (int) $countAll['recordsTotal'];
@@ -946,6 +960,10 @@ class Json extends Config
         $order['dir'] ? $orderDir = $order['dir'] : $orderDir = 'ASC';
         $orderSQL = "ORDER BY $orderColumn $orderDir";
 
+        if ($_GET['columns'][2]['search']['value'] == "0") {
+            $_GET['columns'][2]['search']['value'] = "null";
+        }
+        
         // where part
         $where = 'WHERE 1=1';
         $columns = $_GET['columns'];
@@ -954,7 +972,7 @@ class Json extends Config
             foreach ($columns as $item) {
                 if ($value = $item['search']['value']) {
                     if ($i == 2) {
-                        $havingSQL = " HAVING COUNT(re.errorID)=:p$i";
+                        $where .= " AND rec.errors=:p$i";
                     } else {
                         $where .= ' AND CAST('.$columnArray[$i]." AS CHAR) LIKE :p$i";
                     }
@@ -966,13 +984,13 @@ class Json extends Config
         // count without pagination
         $addPagination = '';
         // add data
-        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+        $data = $this->dbh->prepare("SELECT DISTINCT r.reqID AS id, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing, rec.errors AS numErrors
                                       FROM request r
+                                      JOIN req_error_counter rec ON rec.reqID = r.reqID
                                       LEFT JOIN request_error re ON r.reqID=re.reqID
                                       JOIN error e ON re.errorID=e.errorID AND e.errorPhrase=:errorPhrase
                                       $where
                                       GROUP BY r.reqID
-                                      $havingSQL
                                       $addPagination
                                     ");
         $data->bindParam('errorPhrase', $group);
@@ -999,13 +1017,13 @@ class Json extends Config
         (is_numeric($start) && is_numeric($length)) ? $addPagination = "LIMIT $start,$length" : $addPagination = '';
 
         // add data
-        $data = $this->dbh->prepare("SELECT r.reqID AS id, r.timeRequested AS time,  ROUND(r.timeProcessed,2) AS processing, COUNT(re.errorID) AS numErrors
+        $data = $this->dbh->prepare("SELECT DISTINCT r.reqID AS id, r.timeRequested AS time, ROUND(r.timeProcessed,2) AS processing, rec.errors AS numErrors
                                       FROM request r
+                                      JOIN req_error_counter rec ON rec.reqID = r.reqID
                                       LEFT JOIN request_error re ON r.reqID=re.reqID
                                       JOIN error e ON re.errorID=e.errorID AND e.errorPhrase=:errorPhrase
                                       $where
                                       GROUP BY r.reqID
-                                      $havingSQL
                                       $orderSQL
                                       $addPagination
                                     ");

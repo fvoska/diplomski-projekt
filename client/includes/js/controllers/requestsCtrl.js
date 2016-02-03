@@ -94,6 +94,7 @@ angular.module('diplomski-projekt').controller('requestsCtrl', function($scope, 
           $scope.reqUser = response.data.user;
           $scope.reqTime = response.data.time;
           $scope.reqProcessing = response.data.processing_time;
+          $scope.reqErrorsDistinct = response.data.num_errors_distinct;
           $scope.reqErrors = response.data.num_errors;
           $scope.wordCount = response.data.word_count;
 
